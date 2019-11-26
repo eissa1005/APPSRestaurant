@@ -14,15 +14,28 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="AllowBackup,GoogleAppIndexingWarning">
-        <activity android:name=".UI.MenuActivity" tools:ignore="InnerclassSeparator" />
-        <activity android:name=".UI.UpdateInfoActivity" tools:ignore="InnerclassSeparator" />
-        <activity android:name=".UI.HomeActivity" android:label="@string/title_activity_home"
-        android:theme="@style/AppTheme.NoActionBar" tools:ignore="InnerclassSeparator" />
-
-
-        <activity android:name=".UI.LoginActivity"  tools:ignore="InnerclassSeparator" />
-
-        <activity android:name=".UI.Splash" android:theme="@style/SplashTheme"
+        <activity
+            android:name=".UI.FoodListActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            tools:ignore="InnerclassSeparator"></activity>
+        <activity
+            android:name=".UI.MenuActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            tools:ignore="InnerclassSeparator" />
+        <activity
+            android:name=".UI.UpdateInfoActivity"
+            tools:ignore="InnerclassSeparator" />
+        <activity
+            android:name=".UI.HomeActivity"
+            android:label="@string/title_activity_home"
+            android:theme="@style/AppTheme.NoActionBar"
+            tools:ignore="InnerclassSeparator" />
+        <activity
+            android:name=".UI.LoginActivity"
+            tools:ignore="InnerclassSeparator" />
+        <activity
+            android:name=".UI.Splash"
+            android:theme="@style/SplashTheme"
             tools:ignore="InnerclassSeparator">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

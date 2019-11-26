@@ -32,12 +32,10 @@ import org.greenrobot.eventbus.ThreadMode;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import dmax.dialog.SpotsDialog;
-import io.reactivex.Scheduler;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
 
-@SuppressLint("Registered")
 public class MenuActivity extends BaseActivity {
     private static final String TAG = MenuActivity.class.getSimpleName();
     @BindView(R.id.img_restaurant)

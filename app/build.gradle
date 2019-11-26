@@ -62,7 +62,6 @@ dependencies {
     implementation 'com.squareup.picasso:picasso:2.71828'
 
 
-
     //TODO Retrofit2
     implementation 'com.squareup.retrofit2:retrofit:2.6.2'
     implementation 'com.squareup.retrofit2:converter-gson:2.6.2'
@@ -80,9 +79,6 @@ dependencies {
     //TODO Location
     implementation 'com.google.android.gms:play-services-location:17.0.0'
     implementation 'com.google.android.gms:play-services-auth:17.0.0'
-
-
-
 
 
     implementation 'com.google.firebase:firebase-messaging:18.0.0'
@@ -117,7 +113,7 @@ dependencies {
 
     //TODO Facebook Account Kit
     //implementation 'com.facebook.android:account-kit-sdk:5.+'
-   // implementation 'com.facebook.android:account-kit-sdk:5.4.0'
+    // implementation 'com.facebook.android:account-kit-sdk:5.4.0'
 
     // TODO butterknife
     implementation 'com.jakewharton:butterknife:10.2.0'

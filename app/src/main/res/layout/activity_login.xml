@@ -67,7 +67,6 @@
                     android:fontFamily="@font/magnifika"
                     android:hint="Enter your name"
                     android:textColor="@color/buttonColor"
-                    android:textColorHint="@color/colorBlack"
                     android:textSize="18dp"
                     tools:ignore="Autofill,HardcodedText,SpUsage,TextFields" />
             </com.google.android.material.textfield.TextInputLayout>
@@ -96,7 +95,6 @@
                     android:fontFamily="@font/magnifika"
                     android:hint="Enter your password"
                     android:textColor="@color/buttonColor"
-                    android:textColorHint="@color/colorBlack"
                     android:textSize="18dp"
                     tools:ignore="Autofill,HardcodedText,SpUsage,TextFields" />
             </com.google.android.material.textfield.TextInputLayout>

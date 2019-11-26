@@ -1,6 +1,8 @@
 package com.example.myrestaurant.Adapter;
 
 import android.content.Context;
+import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,9 +15,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myrestaurant.Common.Common;
 import com.example.myrestaurant.Interface.IOnRecyclerViewClickListener;
+import com.example.myrestaurant.Model.EventBus.FoodListEvent;
 import com.example.myrestaurant.Model.Response.Category;
 import com.example.myrestaurant.R;
+import com.example.myrestaurant.UI.FoodListActivity;
 import com.squareup.picasso.Picasso;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
 
@@ -46,14 +52,13 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
         Category category = mCategoryList.get(position);
         Picasso.get().load(category.getImage()).into(holder.img_category);
         holder.txt_category.setText(category.getName());
-        if (holder.onRecyclerViewClickListener != null) {
             holder.setOnRecyclerViewClickListener((view, i) -> {
-
-                // will Send Data by EventBus
-
-                Toast.makeText(mContext, "ActivityFoodList", Toast.LENGTH_SHORT).show();
+                int getMenuId=mCategoryList.get(i).getMenuId();
+                Log.e("MenuId","MenuId is "+getMenuId);
+                // Send sticky post event to FoodListActivity
+                EventBus.getDefault().postSticky(new FoodListEvent(true,mCategoryList.get(i)));
+                mContext.startActivity(new Intent(mContext, FoodListActivity.class));
             });
-        }
     }
 
     @Override

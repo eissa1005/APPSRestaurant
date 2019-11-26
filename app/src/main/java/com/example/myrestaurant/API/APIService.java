@@ -1,5 +1,7 @@
 package com.example.myrestaurant.API;
 
+import com.example.myrestaurant.Model.Response.Foods;
+import com.example.myrestaurant.Model.Response.FoodsModel;
 import com.example.myrestaurant.Model.Response.MenuModel;
 import com.example.myrestaurant.Model.Response.RestauranrModel;
 import com.example.myrestaurant.Model.Response.RestaurantResponse;
@@ -29,6 +31,23 @@ public interface APIService {
     Observable<UserResponse> getUser(@Query("key") String key,
                                      @Query("fbid")String fbid);
 
+
+    @GET("GetAllRestaurant")
+    Observable<RestauranrModel> getRestaurant(@Query("key") String key);
+
+    @GET("Menu")
+    Observable<MenuModel> getCategories(@Query("key") String apiKey,
+                                        @Query("RestaurantId") int restaurantId);
+
+    @GET("Foods")
+    Observable<FoodsModel> getFoods(@Query("key")String key,
+                                    @Query("MenuId")int MenuId);
+
+    @FormUrlEncoded
+    @POST("updateUser")
+    Observable<User> UpdateUser(@Field("key")String key,
+                                @PartMap Map<String,User> userItem);
+
     @FormUrlEncoded
     @POST("updateUser")
     Call<User> updateUser(@Field("key")String key,
@@ -40,19 +59,5 @@ public interface APIService {
                           @Field("FaceId")String FaceId,
                           @Field("userEmail")String userEmail,
                           @Field("TwitterId")String TwitterId);
-
-
-    @FormUrlEncoded
-    @POST("updateUser")
-    Observable<User> UpdateUser(@Field("key")String key,
-                              @PartMap Map<String,User> userItem);
-
-
-    @GET("GetAllRestaurant")
-    Observable<RestauranrModel> getRestaurant(@Query("key") String key);
-
-    @GET("Menu")
-    Observable<MenuModel> getCategories(@Query("key") String apiKey,
-                                        @Query("RestaurantId") int restaurantId);
 
 }
