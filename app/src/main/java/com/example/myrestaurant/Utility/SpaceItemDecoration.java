@@ -1,4 +1,4 @@
-package com.example.myrestaurant.Utils;
+package com.example.myrestaurant.Utility;
 
 import android.graphics.Rect;
 import android.view.View;

@@ -19,7 +19,7 @@ import com.example.myrestaurant.Base.BaseActivity;
 import com.example.myrestaurant.Common.Common;
 import com.example.myrestaurant.Model.EventBus.MenuItemEvent;
 import com.example.myrestaurant.R;
-import com.example.myrestaurant.Utils.SpaceItemDecoration;
+import com.example.myrestaurant.Utility.SpaceItemDecoration;
 import com.flaviofaria.kenburnsview.KenBurnsView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.nex3z.notificationbadge.NotificationBadge;

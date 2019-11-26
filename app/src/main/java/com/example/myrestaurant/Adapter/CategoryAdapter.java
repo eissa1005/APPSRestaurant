@@ -50,7 +50,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
             holder.setOnRecyclerViewClickListener((view, i) -> {
 
                 // will Send Data by EventBus
-              //  EventBus.getDefault().postSticky(new FoodListEvent(true,mCategoryList.get(i)));
+
                 Toast.makeText(mContext, "ActivityFoodList", Toast.LENGTH_SHORT).show();
             });
         }
