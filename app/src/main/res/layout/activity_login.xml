@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.flexbox.FlexboxLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    app:alignContent="stretch"
+    app:alignItems="stretch"
+    app:flexWrap="wrap"
+    app:justifyContent="center"
+    tools:context=".Home.MainActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/buttonColor"
+        android:orientation="vertical"
+        android:padding="16dp"
+        app:layout_alignSelf="flex_start"
+        >
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/magnifika"
+            android:text="@string/app_Name"
+            android:textAlignment="center"
+            android:textColor="@android:color/white"
+            android:textSize="38sp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:gravity="top"
+        android:orientation="vertical"
+        >
+
+        <ImageView
+            android:id="@+id/iconChef"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_centerInParent="true"
+            android:layout_margin="25dp"
+            android:src="@drawable/app_icon"
+            app:layout_alignSelf="flex_start"
+
+            tools:ignore="ContentDescription,ObsoleteLayoutParam" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            tools:ignore="UselessParent">
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/edit_Name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/magnifika"
+                    android:hint="Enter your name"
+                    android:textColor="@color/buttonColor"
+                    android:textColorHint="@color/colorBlack"
+                    android:textSize="18dp"
+                    tools:ignore="Autofill,HardcodedText,SpUsage,TextFields" />
+            </com.google.android.material.textfield.TextInputLayout>
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_margin="5dp"
+            android:background="@color/divider"></View>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            tools:ignore="UselessParent">
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/edit_Password"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/magnifika"
+                    android:hint="Enter your password"
+                    android:textColor="@color/buttonColor"
+                    android:textColorHint="@color/colorBlack"
+                    android:textSize="18dp"
+                    tools:ignore="Autofill,HardcodedText,SpUsage,TextFields" />
+            </com.google.android.material.textfield.TextInputLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            tools:ignore="UselessParent">
+
+            <Button
+                android:id="@+id/btnSignIn"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:layout_weight="1"
+                android:background="@drawable/border_button"
+                android:fontFamily="@font/historicalsanstextured"
+                android:text="Sign In"
+                android:textAllCaps="false"
+                android:textColor="@android:color/white"
+                android:textStyle="italic"
+                app:layout_alignSelf="flex_end"
+                tools:ignore="ButtonStyle,HardcodedText" />
+
+            <Button
+                android:id="@+id/btnRegister"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:layout_weight="1"
+                android:background="@drawable/border_button"
+                android:fontFamily="@font/historicalsanstextured"
+                android:text="Register"
+                android:textAllCaps="false"
+                android:textColor="@android:color/white"
+                android:textStyle="italic"
+                app:layout_alignSelf="flex_end"
+                tools:ignore="ButtonStyle,HardcodedText" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+</com.google.android.flexbox.FlexboxLayout>
