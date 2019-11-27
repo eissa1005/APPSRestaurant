@@ -18,6 +18,7 @@
         android:id="@+id/imageHeader"
         android:layout_width="140dp"
         android:layout_height="100dp"
+        android:layout_gravity="clip_vertical"
         android:background="@drawable/menu_cooking"
         android:contentDescription="@string/nav_header_desc"
         android:paddingTop="@dimen/nav_header_vertical_spacing"
@@ -25,22 +26,27 @@
 
     <TextView
         android:id="@+id/headerName"
-        android:layout_width="match_parent"
+        android:layout_width="139dp"
         android:layout_height="wrap_content"
-        android:paddingTop="@dimen/nav_header_vertical_spacing"
-        android:textStyle="bold"
+        android:layout_gravity="center_vertical"
+        android:layout_margin="2dp"
         android:fontFamily="@font/historicalsanstextured"
-        android:textColor="@color/colorPrimary"
+        android:paddingTop="@dimen/nav_header_vertical_spacing"
         android:text="@string/nav_header_title"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:textColor="@color/colorPrimary"
+        android:textAlignment="center"
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/headerPhone"
-        android:layout_width="wrap_content"
+        android:layout_width="141dp"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="22dp"
+        android:layout_gravity="center_vertical"
+        android:layout_margin="2dp"
         android:fontFamily="@font/historicalsanstextured"
-        android:textColor="@android:color/holo_blue_dark"
-        android:text="@string/nav_header_subtitle" />
+        android:text="@string/nav_header_subtitle"
+        android:textAlignment="center"
+        android:textColor="@android:color/holo_blue_dark" />
 
 </LinearLayout>

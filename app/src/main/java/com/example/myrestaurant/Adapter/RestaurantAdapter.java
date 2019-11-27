@@ -52,6 +52,7 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Re
            Common.currentRestaurant=mRestaurantList.get(i);
            // Here use postSticky, that mean this event will be listen from other activity
           // It will different with just 'post'
+             Toast.makeText(mContext, "RestaurantId : "+mRestaurantList.get(i).getRestaurantId(), Toast.LENGTH_SHORT).show();
             EventBus.getDefault().postSticky(new MenuItemEvent(true,mRestaurantList.get(i)));
            mContext.startActivity(new Intent(mContext, MenuActivity.class));
 

@@ -132,7 +132,9 @@ public class FoodListActivity extends BaseActivity {
 
     @Override
     protected void onDestroy() {
-        compositeDisposable.clear();
+        if(adapter != null){
+            adapter.onStop();
+        }
         super.onDestroy();
     }
 

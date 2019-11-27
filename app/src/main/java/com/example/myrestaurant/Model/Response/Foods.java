@@ -5,22 +5,22 @@ import com.google.gson.annotations.SerializedName;
 public class Foods{
 
 	@SerializedName("id")
-	private String id;
+	private int id;
 
 	@SerializedName("name")
 	private String name;
 
 	@SerializedName("price")
-	private int price;
+	private Double price;
 
 	@SerializedName("image")
 	private String image;
 
 	@SerializedName("isSize")
-	private Object isSize;
+	private String isSize;
 
 	@SerializedName("isAddon")
-	private Object isAddon;
+	private String isAddon;
 
 	@SerializedName("description")
 	private String description;
@@ -48,19 +48,19 @@ public class Foods{
 		return menuId;
 	}
 
-	public void setIsSize(Object isSize){
+	public void setIsSize(String isSize){
 		this.isSize = isSize;
 	}
 
-	public Object getIsSize(){
+	public String getIsSize(){
 		return isSize;
 	}
 
-	public void setPrice(int price){
+	public void setPrice(Double price){
 		this.price = price;
 	}
 
-	public int getPrice(){
+	public Double getPrice(){
 		return price;
 	}
 
@@ -72,11 +72,11 @@ public class Foods{
 		return name;
 	}
 
-	public void setIsAddon(Object isAddon){
+	public void setIsAddon(String isAddon){
 		this.isAddon = isAddon;
 	}
 
-	public Object getIsAddon(){
+	public String getIsAddon(){
 		return isAddon;
 	}
 
@@ -96,11 +96,11 @@ public class Foods{
 		return discount;
 	}
 
-	public void setId(String id){
+	public void setId(int id){
 		this.id = id;
 	}
 
-	public String getId(){
+	public int getId(){
 		return id;
 	}
 

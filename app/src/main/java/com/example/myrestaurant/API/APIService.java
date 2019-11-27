@@ -27,9 +27,9 @@ public interface APIService {
                                @Query("fbid")String fbid);
 
 
-    @GET("GetUser")
-    Observable<UserResponse> getUser(@Query("key") String key,
-                                     @Query("fbid")String fbid);
+    @GET("GetUserByPhone")
+    Observable<UserResponse> GetUserByPhone(@Query("key") String key,
+                                     @Query("userPhone")String userPhone);
 
 
     @GET("GetAllRestaurant")

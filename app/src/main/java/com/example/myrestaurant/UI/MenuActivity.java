@@ -1,4 +1,5 @@
 package com.example.myrestaurant.UI;
+
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.os.Bundle;
@@ -17,6 +18,9 @@ import com.example.myrestaurant.API.APIManage;
 import com.example.myrestaurant.Adapter.CategoryAdapter;
 import com.example.myrestaurant.Base.BaseActivity;
 import com.example.myrestaurant.Common.Common;
+import com.example.myrestaurant.Model.DAO.CartDataSource;
+import com.example.myrestaurant.Model.DAO.CartDatabase;
+import com.example.myrestaurant.Model.DAO.LocalCartDataSource;
 import com.example.myrestaurant.Model.EventBus.MenuItemEvent;
 import com.example.myrestaurant.R;
 import com.example.myrestaurant.Utility.SpaceItemDecoration;
@@ -32,8 +36,10 @@ import org.greenrobot.eventbus.ThreadMode;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import dmax.dialog.SpotsDialog;
+import io.reactivex.SingleObserver;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 public class MenuActivity extends BaseActivity {
@@ -50,6 +56,7 @@ public class MenuActivity extends BaseActivity {
     CompositeDisposable mCompositeDisposable;
     AlertDialog mDialog;
     CategoryAdapter adapter;
+    CartDataSource cartDataSource;
 
     private LayoutAnimationController mLayoutAnimationController;
 
@@ -60,9 +67,34 @@ public class MenuActivity extends BaseActivity {
 
         init();
         initView();
+        countCartByRestaurant();
 
     }
 
+
+    private void countCartByRestaurant() {
+        Toast.makeText(activity, "countCartByRestaurant " +Common.currentRestaurant.getRestaurantId(), Toast.LENGTH_SHORT).show();
+        cartDataSource.countItemInCart(Common.currentUser.getfBID(), Common.currentRestaurant.getRestaurantId())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new SingleObserver<Integer>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onSuccess(Integer integer) {
+                            notificationBadge.setText(String.valueOf(integer));
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Toast.makeText(activity, "[Cart Count]" + e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+    }
 
 
     private void initView() {
@@ -96,6 +128,7 @@ public class MenuActivity extends BaseActivity {
         mCompositeDisposable = new CompositeDisposable();
         Log.d(TAG, "init: called!!");
         mDialog = new SpotsDialog.Builder().setContext(this).setCancelable(false).build();
+        cartDataSource = new LocalCartDataSource(CartDatabase.getInstance(this).cartDAO());
     }
 
     @Override
@@ -117,6 +150,12 @@ public class MenuActivity extends BaseActivity {
     }
 
     @Override
+    protected void onResume() {
+        countCartByRestaurant();
+        super.onResume();
+    }
+
+    @Override
     protected void onStop() {
         EventBus.getDefault().unregister(this);
         super.onStop();
@@ -128,36 +167,36 @@ public class MenuActivity extends BaseActivity {
         super.onDestroy();
     }
 
-    @Subscribe(sticky = true,threadMode = ThreadMode.MAIN)
-    public void loadMenuByRestaurant(MenuItemEvent event){
-       if(event.isSuccess()){
-           Picasso.get().load(event.getRestaurant().getImage()).into(img_restaurant);
-           toolbar.setTitle(event.getRestaurant().getRestaurantName());
-           Log.e("event", "Size of Restaurnt Banner : "+event.getRestaurant().getRestaurantName());
+    @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
+    public void loadMenuByRestaurant(MenuItemEvent event) {
+        if (event.isSuccess()) {
+            Picasso.get().load(event.getRestaurant().getImage()).into(img_restaurant);
+            toolbar.setTitle(event.getRestaurant().getRestaurantName());
+            Log.e("event", "Size of Restaurnt Banner : " + event.getRestaurant().getRestaurantName());
 
-           setSupportActionBar(toolbar);
-           getSupportActionBar().setDisplayShowHomeEnabled(true);
-           getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            setSupportActionBar(toolbar);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-           Log.e("RestaurantId", "RestaurantId is : "+event.getRestaurant().getRestaurantId());
+            Log.e("RestaurantId", "RestaurantId is : " + event.getRestaurant().getRestaurantId());
 
-           mCompositeDisposable.add(APIManage.getApi()
-                   .getCategories(Common.API_KEY,event.getRestaurant().getRestaurantId())
-                   .subscribeOn(Schedulers.io())
-                   .observeOn(AndroidSchedulers.mainThread())
-                   .subscribe(menuModel -> {
-                       adapter = new CategoryAdapter(MenuActivity.this,menuModel.getResult());
-                       recycler_category.setAdapter(adapter);
-                       recycler_category.setLayoutAnimation(mLayoutAnimationController);
-                       Log.e("menuModel", "menuModel size is : "+menuModel.getResult().size());
+            mCompositeDisposable.add(APIManage.getApi()
+                    .getCategories(Common.API_KEY, event.getRestaurant().getRestaurantId())
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(menuModel -> {
+                        adapter = new CategoryAdapter(MenuActivity.this, menuModel.getResult());
+                        recycler_category.setAdapter(adapter);
+                        recycler_category.setLayoutAnimation(mLayoutAnimationController);
+                        Log.e("menuModel", "menuModel size is : " + menuModel.getResult().size());
 
-                   },throwable -> {
-                       mDialog.dismiss();
-                       Toast.makeText(activity, "[GetMenuError ]"+throwable.getMessage(), Toast.LENGTH_SHORT).show();
-                       Log.e("Message",throwable.getMessage());
-                   })
+                    }, throwable -> {
+                        mDialog.dismiss();
+                        Toast.makeText(activity, "[GetMenuError ]" + throwable.getMessage(), Toast.LENGTH_SHORT).show();
+                        Log.e("Message", throwable.getMessage());
+                    })
 
-           );
-       }
+            );
+        }
     }
 }

@@ -11,27 +11,46 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.myrestaurant.Common.Common;
 import com.example.myrestaurant.Interface.IFoodDetailOrCartClickListener;
 import com.example.myrestaurant.Interface.IOnRecyclerViewClickListener;
+import com.example.myrestaurant.Model.DAO.CartDAO;
+import com.example.myrestaurant.Model.DAO.CartDataSource;
+import com.example.myrestaurant.Model.DAO.CartDatabase;
+import com.example.myrestaurant.Model.DAO.CartItem;
+import com.example.myrestaurant.Model.DAO.LocalCartDataSource;
 import com.example.myrestaurant.Model.Response.Foods;
 import com.example.myrestaurant.R;
 import com.squareup.picasso.Picasso;
 
+import java.text.ParsePosition;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import io.reactivex.Scheduler;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.schedulers.Schedulers;
 
 
 public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.FoodHolder> {
 
-    List<Foods> listFoods;
     Context mContext;
+    List<Foods> listFoods;
+    private CompositeDisposable mCompositeDisposable;
+    private CartDataSource mCartDataSource;
 
     public FoodAdapter(Context context, List<Foods> listFoods) {
         this.mContext = context;
         this.listFoods = listFoods;
+        mCompositeDisposable = new CompositeDisposable();
+        mCartDataSource = new LocalCartDataSource(CartDatabase.getInstance(mContext).cartDAO());
+    }
+
+    public void onStop() {
+        mCompositeDisposable.clear();
     }
 
     @NonNull
@@ -50,6 +69,33 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.FoodHolder> {
 
         holder.txt_food_price.setText(new StringBuilder(mContext.getString(R.string.money_sign))
                 .append(foods.getPrice()));
+        holder.setOnFoodDetailOrCartClickListener((view, i, isDetail) -> {
+            if (isDetail) {
+
+            } else {
+               // Creste CartItem
+                CartItem cartItem = new CartItem();
+                cartItem.setFoodId(listFoods.get(i).getId());
+                cartItem.setFoodName(listFoods.get(i).getName());
+                cartItem.setFoodPrice(listFoods.get(i).getPrice());
+                cartItem.setFoodImage(listFoods.get(i).getImage());
+                cartItem.setFoodQuantity(1);
+                cartItem.setUserPhone(Common.currentUser.getUserPhone());
+                cartItem.setRestaurantId(Common.currentRestaurant.getRestaurantId());
+                cartItem.setFoodAddon("NORMAL");
+                cartItem.setFoodSize("NORMAL");
+                cartItem.setFoodExtraPrice(0.0);
+                cartItem.setFbid(Common.currentUser.getfBID());
+                mCompositeDisposable.add(mCartDataSource.insertOrReplaceAll(cartItem)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(() ->{
+                    
+                },throwable -> {
+                    Toast.makeText(mContext, "Add To Cart", Toast.LENGTH_SHORT).show();
+                }));
+            }
+        });
 
 
     }
