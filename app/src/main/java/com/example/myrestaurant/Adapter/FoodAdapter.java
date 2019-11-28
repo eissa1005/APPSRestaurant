@@ -1,6 +1,8 @@
 package com.example.myrestaurant.Adapter;
 
 import android.content.Context;
+import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,9 +21,13 @@ import com.example.myrestaurant.Model.DAO.CartDataSource;
 import com.example.myrestaurant.Model.DAO.CartDatabase;
 import com.example.myrestaurant.Model.DAO.CartItem;
 import com.example.myrestaurant.Model.DAO.LocalCartDataSource;
+import com.example.myrestaurant.Model.EventBus.FoodDetailEvent;
 import com.example.myrestaurant.Model.Response.Foods;
 import com.example.myrestaurant.R;
+import com.example.myrestaurant.UI.FoodDetailActivity;
 import com.squareup.picasso.Picasso;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.text.ParsePosition;
 import java.util.List;
@@ -29,7 +35,6 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
-import io.reactivex.Scheduler;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
@@ -70,10 +75,13 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.FoodHolder> {
         holder.txt_food_price.setText(new StringBuilder(mContext.getString(R.string.money_sign))
                 .append(foods.getPrice()));
         holder.setOnFoodDetailOrCartClickListener((view, i, isDetail) -> {
-            if (isDetail) {
+            // Create CartItem
+            if(isDetail){
+                // EventBus Send Data To FoodDetailActivity
+                EventBus.getDefault().postSticky(new FoodDetailEvent(true,listFoods.get(i)));
+                mContext.startActivity(new Intent(mContext, FoodDetailActivity.class));
 
-            } else {
-               // Creste CartItem
+            }else{
                 CartItem cartItem = new CartItem();
                 cartItem.setFoodId(listFoods.get(i).getId());
                 cartItem.setFoodName(listFoods.get(i).getName());
@@ -87,14 +95,17 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.FoodHolder> {
                 cartItem.setFoodExtraPrice(0.0);
                 cartItem.setFbid(Common.currentUser.getfBID());
                 mCompositeDisposable.add(mCartDataSource.insertOrReplaceAll(cartItem)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(() ->{
-                    
-                },throwable -> {
-                    Toast.makeText(mContext, "Add To Cart", Toast.LENGTH_SHORT).show();
-                }));
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(() -> {
+                            Toast.makeText(mContext, "Add To Cart "+cartItem.getFoodName(), Toast.LENGTH_SHORT).show();
+                            Log.e("cartItem", cartItem.getFbid());
+                        }, throwable -> {
+                            Toast.makeText(mContext, "AddFailure " + throwable.getMessage(), Toast.LENGTH_SHORT).show();
+                        }));
             }
+
+
         });
 
 

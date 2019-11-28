@@ -15,8 +15,6 @@ public abstract class CartDatabase extends RoomDatabase {
      public static CartDatabase getInstance(Context context){
          if(cartInstance == null){
              cartInstance = Room.databaseBuilder(context,CartDatabase.class,dbName)
-                     .fallbackToDestructiveMigration()
-                     .allowMainThreadQueries()
                      .build();
          }
          return cartInstance;

@@ -140,9 +140,6 @@ dependencies {
     //TODO Expandable layout
     implementation 'com.github.florent37:expansionpanel:1.2.2'
 
-    //TODO Date Calendar
-    implementation 'com.wdullaer:materialdatetimepicker:4.2.1'
-
     //TODO Braintree
     implementation 'com.braintreepayments.api:drop-in:4.2.0'
 
@@ -152,6 +149,12 @@ dependencies {
 
     //TODO Ken burns Effect
     implementation 'com.flaviofaria:kenburnsview:1.0.7'
+
+    //TODO Expandable layout
+    implementation 'com.github.florent37:expansionpanel:1.2.2'
+
+    //TODO Date Calendar
+    implementation 'com.wdullaer:materialdatetimepicker:4.2.1'
 
     //TODO Paper
     implementation 'io.paperdb:paperdb:2.6'

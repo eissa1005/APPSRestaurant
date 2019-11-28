@@ -14,10 +14,11 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="AllowBackup,GoogleAppIndexingWarning">
+        <activity android:name=".UI.FoodDetailActivity"></activity>
         <activity
             android:name=".UI.FoodListActivity"
             android:theme="@style/AppTheme.NoActionBar"
-            tools:ignore="InnerclassSeparator"></activity>
+            tools:ignore="InnerclassSeparator" />
         <activity
             android:name=".UI.MenuActivity"
             android:theme="@style/AppTheme.NoActionBar"

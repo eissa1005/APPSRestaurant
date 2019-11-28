@@ -108,6 +108,7 @@ public class LoginActivity extends BaseActivity {
                                 startActivity(new Intent(LoginActivity.this, HomeActivity.class));
                             }else{
                                 Toast.makeText(activity, "UserPhone Or UserPassword Invalid ,Please Try Again ", Toast.LENGTH_SHORT).show();
+                                hideProgressDialog();
                             }
                         } else {
                             Log.d("UserLogin", userResponse.getMessage());
@@ -122,7 +123,6 @@ public class LoginActivity extends BaseActivity {
 
         }
     }
-
 
     @OnClick(R.id.btnRegister)
     public void Register(View view) {
