@@ -1,7 +1,11 @@
 package com.example.myrestaurant.Common;
 
+import com.example.myrestaurant.Model.Response.Addon;
 import com.example.myrestaurant.Model.Response.Restaurant;
 import com.example.myrestaurant.Model.Response.User;
+
+import java.util.HashSet;
+import java.util.Set;
 
 public class Common {
 
@@ -12,6 +16,7 @@ public class Common {
 
     public  static User currentUser;
     public  static Restaurant currentRestaurant;
+    public static Set<Addon> addonList = new HashSet<>();
 
 
 

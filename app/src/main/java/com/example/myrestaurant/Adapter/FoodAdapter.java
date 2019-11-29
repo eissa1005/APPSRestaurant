@@ -9,14 +9,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.example.myrestaurant.Common.Common;
 import com.example.myrestaurant.Interface.IFoodDetailOrCartClickListener;
-import com.example.myrestaurant.Interface.IOnRecyclerViewClickListener;
-import com.example.myrestaurant.Model.DAO.CartDAO;
 import com.example.myrestaurant.Model.DAO.CartDataSource;
 import com.example.myrestaurant.Model.DAO.CartDatabase;
 import com.example.myrestaurant.Model.DAO.CartItem;
@@ -26,12 +22,8 @@ import com.example.myrestaurant.Model.Response.Foods;
 import com.example.myrestaurant.R;
 import com.example.myrestaurant.UI.FoodDetailActivity;
 import com.squareup.picasso.Picasso;
-
 import org.greenrobot.eventbus.EventBus;
-
-import java.text.ParsePosition;
 import java.util.List;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;

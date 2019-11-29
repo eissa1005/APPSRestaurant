@@ -17,10 +17,10 @@ public class Foods{
 	private String image;
 
 	@SerializedName("isSize")
-	private String isSize;
+	private boolean isSize;
 
 	@SerializedName("isAddon")
-	private String isAddon;
+	private boolean isAddon;
 
 	@SerializedName("description")
 	private String description;
@@ -31,77 +31,76 @@ public class Foods{
 	@SerializedName("MenuId")
 	private String menuId;
 
-
-	public void setImage(String image){
-		this.image = image;
+	public int getId() {
+		return id;
 	}
 
-	public String getImage(){
-		return image;
-	}
-
-	public void setMenuId(String menuId){
-		this.menuId = menuId;
-	}
-
-	public String getMenuId(){
-		return menuId;
-	}
-
-	public void setIsSize(String isSize){
-		this.isSize = isSize;
-	}
-
-	public String getIsSize(){
-		return isSize;
-	}
-
-	public void setPrice(Double price){
-		this.price = price;
-	}
-
-	public Double getPrice(){
-		return price;
-	}
-
-	public void setName(String name){
-		this.name = name;
-	}
-
-	public String getName(){
-		return name;
-	}
-
-	public void setIsAddon(String isAddon){
-		this.isAddon = isAddon;
-	}
-
-	public String getIsAddon(){
-		return isAddon;
-	}
-
-	public void setDescription(String description){
-		this.description = description;
-	}
-
-	public String getDescription(){
-		return description;
-	}
-
-	public void setDiscount(int discount){
-		this.discount = discount;
-	}
-
-	public int getDiscount(){
-		return discount;
-	}
-
-	public void setId(int id){
+	public void setId(int id) {
 		this.id = id;
 	}
 
-	public int getId(){
-		return id;
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public Double getPrice() {
+		return price;
+	}
+
+	public void setPrice(Double price) {
+		this.price = price;
+	}
+
+	public String getImage() {
+		return image;
+	}
+
+	public void setImage(String image) {
+		this.image = image;
+	}
+
+	public boolean isSize() {
+		return isSize;
+	}
+
+	public void setSize(boolean size) {
+		isSize = size;
+	}
+
+	public boolean isAddon() {
+		return isAddon;
+	}
+
+	public void setAddon(boolean addon) {
+		isAddon = addon;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public int getDiscount() {
+		return discount;
+	}
+
+	public void setDiscount(int discount) {
+		this.discount = discount;
+	}
+
+	public String getMenuId() {
+		return menuId;
+	}
+
+	public void setMenuId(String menuId) {
+		this.menuId = menuId;
 	}
 
 	@Override

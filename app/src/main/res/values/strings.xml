@@ -34,5 +34,6 @@
     <string name="empty_cart">Empty Cart</string>
     <string name="your_order">Your Order</string>
     <string name="title_activity_nearby_restaurant">Map</string>
+    <string name="address">Address</string>
 
 </resources>

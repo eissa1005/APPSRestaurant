@@ -1,15 +1,13 @@
 package com.example.myrestaurant.API;
 
-import com.example.myrestaurant.Model.Response.Foods;
+import com.example.myrestaurant.Model.Response.AddonModel;
 import com.example.myrestaurant.Model.Response.FoodsModel;
 import com.example.myrestaurant.Model.Response.MenuModel;
 import com.example.myrestaurant.Model.Response.RestauranrModel;
-import com.example.myrestaurant.Model.Response.RestaurantResponse;
+import com.example.myrestaurant.Model.Response.SizeModel;
 import com.example.myrestaurant.Model.Response.User;
 import com.example.myrestaurant.Model.Response.UserResponse;
-
 import java.util.Map;
-
 import io.reactivex.Observable;
 import retrofit2.Call;
 import retrofit2.http.Field;
@@ -42,6 +40,14 @@ public interface APIService {
     @GET("Foods")
     Observable<FoodsModel> getFoods(@Query("key")String key,
                                     @Query("MenuId")int MenuId);
+
+    @GET("Size")
+    Observable<SizeModel> getSizeOfFoods(@Query("key")String key,
+                                   @Query("foodId")String foodId);
+
+    @GET("Addon")
+    Observable<AddonModel> getAddonOfFoods(@Query("key")String key,
+                                    @Query("foodId")String foodId);
 
     @FormUrlEncoded
     @POST("updateUser")

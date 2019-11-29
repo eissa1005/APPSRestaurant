@@ -10,7 +10,6 @@ import com.example.myrestaurant.Model.EventBus.RestaurantLoadEvent;
 import com.example.myrestaurant.Model.Response.Restaurant;
 import com.example.myrestaurant.R;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import com.example.myrestaurant.Service.PicassoImageLoadingService;
@@ -43,9 +42,10 @@ import ss.com.bannerslider.Slider;
 public class HomeActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private static final String TAG = HomeActivity.class.getSimpleName();
-
-    private TextView txt_user_name;
-    private TextView txt_user_phone;
+    @BindView(R.id.headerName)
+    TextView txt_user_name;
+    @BindView(R.id.headerPhone)
+    TextView txt_user_phone;
 
     @BindView(R.id.banner_slider)
     Slider banner_slider;
@@ -76,8 +76,6 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
         txt_user_name = headerView.findViewById(R.id.headerName);
         txt_user_phone = headerView.findViewById(R.id.headerPhone);
 
-        txt_user_name.setText(Common.currentUser.getUserName());
-        txt_user_phone.setText(Common.currentUser.getUserPhone());
 
         init();
         initView();

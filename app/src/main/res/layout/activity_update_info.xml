@@ -38,7 +38,8 @@
             android:text="User Information"
             android:textColor="@color/buttonColor"
             android:textSize="20sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            tools:ignore="HardcodedText" />
     </LinearLayout>
 
 
@@ -66,7 +67,8 @@
                             android:id="@+id/et_user_name"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="Name" />
+                            android:hint="Name"
+                            tools:ignore="Autofill,HardcodedText,TextFields" />
                     </com.google.android.material.textfield.TextInputLayout>
 
                 </LinearLayout>
@@ -92,7 +94,8 @@
                             android:id="@+id/et_user_address"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="Address" />
+                            android:hint="@string/address"
+                            tools:ignore="Autofill,TextFields" />
                     </com.google.android.material.textfield.TextInputLayout>
 
                 </LinearLayout>
@@ -114,7 +117,7 @@
         android:fontFamily="@font/historicalsanstextured"
         android:textStyle="bold"
         app:layout_alignSelf="flex_start"
-        />
+        tools:ignore="HardcodedText" />
 
 
 </LinearLayout>
