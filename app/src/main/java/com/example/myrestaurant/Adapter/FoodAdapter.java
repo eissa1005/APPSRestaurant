@@ -73,9 +73,10 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.FoodHolder> {
                 EventBus.getDefault().postSticky(new FoodDetailEvent(true,listFoods.get(i)));
                 mContext.startActivity(new Intent(mContext, FoodDetailActivity.class));
 
-            }else{
+           }
+            else{
                 CartItem cartItem = new CartItem();
-                cartItem.setFoodId(listFoods.get(i).getId());
+                cartItem.setFoodId(listFoods.get(i).getFoodID());
                 cartItem.setFoodName(listFoods.get(i).getName());
                 cartItem.setFoodPrice(listFoods.get(i).getPrice());
                 cartItem.setFoodImage(listFoods.get(i).getImage());
@@ -136,6 +137,7 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.FoodHolder> {
             super(itemView);
             unbinder = ButterKnife.bind(this, itemView);
             img_detail.setOnClickListener(this);
+            img_fav.setOnClickListener(this);
             img_cart.setOnClickListener(this);
         }
 

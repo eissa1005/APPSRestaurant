@@ -47,7 +47,7 @@
                 tools:ignore="HardcodedText" />
 
         </LinearLayout>
-
+        
         <LinearLayout
             android:layout_gravity="center_vertical"
             android:layout_marginStart="8dp"
@@ -55,7 +55,7 @@
             android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="wrap_content">
-
+            
             <ImageView
                 android:id="@+id/img_detail"
                 android:src="@drawable/ic_info_outline_button_color_24dp"

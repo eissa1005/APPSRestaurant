@@ -43,11 +43,11 @@ public interface APIService {
 
     @GET("Size")
     Observable<SizeModel> getSizeOfFoods(@Query("key")String key,
-                                   @Query("foodId")String foodId);
+                                   @Query("FoodId")int FoodId);
 
     @GET("Addon")
     Observable<AddonModel> getAddonOfFoods(@Query("key")String key,
-                                    @Query("foodId")String foodId);
+                                    @Query("FoodId")int FoodId);
 
     @FormUrlEncoded
     @POST("updateUser")

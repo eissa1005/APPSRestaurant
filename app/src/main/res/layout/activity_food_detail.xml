@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/divider"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context=".FoodDetailActivity">
+    tools:context=".UI.FoodDetailActivity">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -78,8 +78,9 @@
                             android:id="@+id/fab_add_to_cart"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:backgroundTint="@color/white"
                             android:layout_gravity="center_vertical|right"
-                            android:src="@drawable/ic_shopping_cart_white_24dp"
+                            android:src="@drawable/ic_shopping_cart_button_color_24dp"
                             tools:ignore="RtlHardcoded" />
 
                     </LinearLayout>

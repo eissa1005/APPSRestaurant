@@ -81,7 +81,7 @@ dependencies {
     implementation 'com.google.android.gms:play-services-auth:17.0.0'
 
 
-    implementation 'com.google.firebase:firebase-messaging:18.0.0'
+    implementation 'com.google.firebase:firebase-messaging:20.0.1'
     //TODO Firebase-auth
     implementation 'com.google.firebase:firebase-auth:19.2.0'
     implementation 'com.google.android.gms:play-services-auth:17.0.0'

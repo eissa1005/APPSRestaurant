@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -50,13 +51,13 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
         Category category = mCategoryList.get(position);
         Picasso.get().load(category.getImage()).into(holder.img_category);
         holder.txt_category.setText(category.getName());
-            holder.setOnRecyclerViewClickListener((view, i) -> {
-                int getMenuId=mCategoryList.get(i).getMenuId();
-                Log.e("MenuId","MenuId is "+getMenuId);
-                // Send sticky post event to FoodListActivity
-                EventBus.getDefault().postSticky(new FoodListEvent(true,mCategoryList.get(i)));
-                mContext.startActivity(new Intent(mContext, FoodListActivity.class));
-            });
+        holder.setOnRecyclerViewClickListener((view, i) -> {
+            int getMenuId = mCategoryList.get(i).getMenuId();
+            Log.e("CategoryMenuId", "MenuId is " + getMenuId);
+            // Send sticky post event to FoodListActivity
+            EventBus.getDefault().postSticky(new FoodListEvent(true, mCategoryList.get(i)));
+            mContext.startActivity(new Intent(mContext, FoodListActivity.class));
+        });
     }
 
     @Override
@@ -69,13 +70,11 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
     public int getItemViewType(int position) {
         if (mCategoryList.size() == 1) {
             return Common.DEFAULT_COLUMN_COUNT;
-        }
-        else {
+        } else {
             if (mCategoryList.size() % 2 == 0) {
                 return Common.DEFAULT_COLUMN_COUNT;
-            }
-            else {
-                return (position > 1 && position == mCategoryList.size()-1)
+            } else {
+                return (position > 1 && position == mCategoryList.size() - 1)
                         ? Common.FULL_WIDTH_COLUMN
                         : Common.DEFAULT_COLUMN_COUNT;
             }
@@ -109,5 +108,5 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
         public void onClick(View v) {
             onRecyclerViewClickListener.onClick(v, getAdapterPosition());
         }
-      }
+    }
 }

@@ -40,7 +40,7 @@ import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
 
 public class FoodListActivity extends BaseActivity {
-    private static final String TAG = "FoodListActivity";
+    private static final String TAG = FoodListActivity.class.getSimpleName();
     @BindView(R.id.img_category)
     KenBurnsView img_category;
     @BindView(R.id.recycler_food_list)
@@ -59,7 +59,7 @@ public class FoodListActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_food_list);
-        Log.e("FoodList", "onCreate: started!!");
+        Log.e(TAG, "onCreate: started!!");
         init();
         initView();
     }
@@ -90,7 +90,7 @@ public class FoodListActivity extends BaseActivity {
     // Listen Data
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
     public void loadFoodslist(@NotNull FoodListEvent event) {
-        Log.d("loadFoodslist","Called");
+        Log.d("loadFoodslist", "Called");
         if (event.isSuccess()) {
             Picasso.get().load(event.getCategory().getImage()).into(img_category);
             toolbar.setTitle(event.getCategory().getName());
@@ -98,16 +98,18 @@ public class FoodListActivity extends BaseActivity {
             getSupportActionBar().setDisplayShowHomeEnabled(true);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             mDialog.show();
+            int getMenuId = event.getCategory().getMenuId();
+            Log.d("FoodListMenuId", "MenuId" + getMenuId);
             compositeDisposable.add(APIManage.getApi()
                     .getFoods(Common.API_KEY, event.getCategory().getMenuId())
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(foodsModel -> {
-                        if(foodsModel.isSuccess()) {
-                            double size = foodsModel.getResult().size();
+                        if (foodsModel.isSuccess()) {
+                            int size = foodsModel.getResult().size();
                             Log.d("FoodListSize", "FoodList size : " + size);
                             displayFoodslist(foodsModel.getResult());
-                        }else {
+                        } else {
                             Toast.makeText(this, "[GET FOOD RESULT]" + foodsModel.getMessage(), Toast.LENGTH_SHORT).show();
                         }
 
@@ -132,7 +134,7 @@ public class FoodListActivity extends BaseActivity {
 
     @Override
     protected void onDestroy() {
-        if(adapter != null){
+        if (adapter != null) {
             adapter.onStop();
         }
         super.onDestroy();

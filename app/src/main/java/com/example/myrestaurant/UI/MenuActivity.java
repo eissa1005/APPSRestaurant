@@ -180,7 +180,7 @@ public class MenuActivity extends BaseActivity {
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(menuModel -> {
-                        Log.e("menuModelCalled","Called");
+                        Log.d("menuModelCalled","Called");
                         if(menuModel.isSuccess()) {
                             adapter = new CategoryAdapter(MenuActivity.this, menuModel.getResult());
                             recycler_category.setAdapter(adapter);
@@ -189,7 +189,7 @@ public class MenuActivity extends BaseActivity {
                         }
                     }, throwable -> {
                         mDialog.dismiss();
-                        Toast.makeText(activity, "[GetMenuError ]" + throwable.getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(activity, "GetMenuError " + throwable.getMessage(), Toast.LENGTH_SHORT).show();
                         Log.e("menuModelMessage", throwable.getMessage());
                     })
 

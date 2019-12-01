@@ -4,39 +4,36 @@ import com.google.gson.annotations.SerializedName;
 
 public class Foods{
 
-	@SerializedName("id")
-	private int id;
+	@SerializedName("FoodID")
+	private int foodID;
 
-	@SerializedName("name")
+	@SerializedName("Name")
 	private String name;
 
-	@SerializedName("price")
-	private Double price;
-
-	@SerializedName("image")
-	private String image;
-
-	@SerializedName("isSize")
-	private boolean isSize;
-
-	@SerializedName("isAddon")
-	private boolean isAddon;
-
-	@SerializedName("description")
+	@SerializedName("Description")
 	private String description;
 
-	@SerializedName("discount")
+	@SerializedName("Price")
+	private double price;
+
+	@SerializedName("Image")
+	private String image;
+
+	@SerializedName("IsSize")
+	private boolean isSize;
+
+	@SerializedName("IsAddon")
+	private boolean isAddon;
+
+	@SerializedName("Discount")
 	private int discount;
 
-	@SerializedName("MenuId")
-	private String menuId;
-
-	public int getId() {
-		return id;
+	public int getFoodID() {
+		return foodID;
 	}
 
-	public void setId(int id) {
-		this.id = id;
+	public void setFoodID(int foodID) {
+		this.foodID = foodID;
 	}
 
 	public String getName() {
@@ -47,11 +44,19 @@ public class Foods{
 		this.name = name;
 	}
 
-	public Double getPrice() {
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public double getPrice() {
 		return price;
 	}
 
-	public void setPrice(Double price) {
+	public void setPrice(double price) {
 		this.price = price;
 	}
 
@@ -79,14 +84,6 @@ public class Foods{
 		isAddon = addon;
 	}
 
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
 	public int getDiscount() {
 		return discount;
 	}
@@ -95,27 +92,18 @@ public class Foods{
 		this.discount = discount;
 	}
 
-	public String getMenuId() {
-		return menuId;
-	}
-
-	public void setMenuId(String menuId) {
-		this.menuId = menuId;
-	}
-
 	@Override
  	public String toString(){
 		return 
 			"Food{" +
-			"image = '" + image + '\'' + 
-			",menuId = '" + menuId + '\'' + 
-			",isSize = '" + isSize + '\'' + 
-			",price = '" + price + '\'' + 
-			",name = '" + name + '\'' + 
-			",isAddon = '" + isAddon + '\'' + 
-			",description = '" + description + '\'' + 
-			",discount = '" + discount + '\'' + 
-			",id = '" + id + '\'' + 
+			"image = '" + image + '\'' +
+			",isSize = '" + isSize + '\'' +
+			",price = '" + price + '\'' +
+			",name = '" + name + '\'' +
+			",isAddon = '" + isAddon + '\'' +
+			",description = '" + description + '\'' +
+			",discount = '" + discount + '\'' +
+			",id = '" + foodID + '\'' +
 			"}";
 		}
 }

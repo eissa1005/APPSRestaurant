@@ -11,9 +11,7 @@ import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LayoutAnimationController;
 import android.widget.Button;
-import android.widget.CompoundButton;
 import android.widget.LinearLayout;
-import android.widget.LinearLayout.LayoutParams;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -77,6 +75,7 @@ public class FoodDetailActivity extends BaseActivity {
     private double addOnPrice = 0.0;
     private double extraPrice;
 
+
     @Override
     protected void onDestroy() {
         compositeDisposable.clear();
@@ -97,7 +96,7 @@ public class FoodDetailActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Log.d(TAG, "onCreate");
+        Log.d(TAG, "onCreate :Called");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_food_detail);
         init();
@@ -105,7 +104,7 @@ public class FoodDetailActivity extends BaseActivity {
     }
 
     private void initView() {
-        Log.d("initView", "Called");
+        Log.d(TAG, "initView : Called");
         ButterKnife.bind(activity);
         layoutAnimationController = AnimationUtils.loadLayoutAnimation(activity, R.anim.layout_item_from_left);
     }
@@ -116,45 +115,42 @@ public class FoodDetailActivity extends BaseActivity {
         cartDataSource = new LocalCartDataSource(CartDatabase.getInstance(this).cartDAO());
     }
 
-
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
-    public void displatFoodDetail(FoodDetailEvent event) {
+    public void displayFoodDetail(FoodDetailEvent event) {
+        Log.d(TAG, "displayFoodDetail: called!!");
         Log.d(TAG, "displayFoodDetail: Name: " + event.getFoods().getName());
-        Log.d("displatFoodDetail", "Called");
         if (event.isSuccess()) {
             toolbar.setTitle(event.getFoods().getName());
+
             setSupportActionBar(toolbar);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
             selectFood = event.getFoods();
             originalPrice = event.getFoods().getPrice();
+
             txt_money.setText(String.valueOf(originalPrice));
             txt_description.setText(event.getFoods().getDescription());
-            Picasso.get().load(event.getFoods().getImage()).into(fab_add_to_cart);
+            Picasso.get().load(event.getFoods().getImage()).into(img_food_detail);
 
-            // If food And size
             if (event.getFoods().isSize() && event.getFoods().isAddon()) {
-                // Load Size && Addon From Server
+                // Load size and addon from server
                 mDialog.show();
-                compositeDisposable.add(APIManage.getApi().getSizeOfFoods(Common.API_KEY, event.getFoods().getMenuId())
-                        .observeOn(Schedulers.io())
+                compositeDisposable.add(APIManage.getApi().getSizeOfFoods(Common.API_KEY, event.getFoods().getFoodID())
+                        .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(sizeModel -> {
-                            // Send Local Data
+                            // Send local event bust
                             EventBus.getDefault().post(new SizeLoadEvent(true, sizeModel.getResult()));
-                            int size = sizeModel.getResult().size();
-                            Log.e("SizeLoadEvent", "size is : " + size);
+
                             // Load addon after load size
                             mDialog.show();
-                            compositeDisposable.add(APIManage.getApi().getAddonOfFoods(Common.API_KEY, event.getFoods().getMenuId())
+                            compositeDisposable.add(APIManage.getApi().getAddonOfFoods(Common.API_KEY, event.getFoods().getFoodID())
                                     .subscribeOn(Schedulers.io())
                                     .observeOn(AndroidSchedulers.mainThread())
                                     .subscribe(addonModel -> {
                                         mDialog.dismiss();
                                         EventBus.getDefault().post(new AddonLoadEvent(true, addonModel.getResult()));
-                                        int addonSize = addonModel.getResult().size();
-                                        Log.e("AddonLoadEvent", "addonSize is : " + addonSize);
                                     }, throwable -> {
                                         Toast.makeText(this, "[LOAD ADDON]" + throwable.getMessage(), Toast.LENGTH_SHORT).show();
                                     }));
@@ -163,32 +159,29 @@ public class FoodDetailActivity extends BaseActivity {
                             mDialog.dismiss();
                             Toast.makeText(this, "[LOAD SIZE]" + throwable.getMessage(), Toast.LENGTH_SHORT).show();
                         }));
-
             } else {
                 // If food only have size
                 if (event.getFoods().isSize()) {
-                    mDialog.show();
-                    compositeDisposable.add(APIManage.getApi().getSizeOfFoods(Common.API_KEY, event.getFoods().getMenuId())
-                            .observeOn(Schedulers.io())
+                    compositeDisposable.add(APIManage.getApi().getSizeOfFoods(Common.API_KEY, event.getFoods().getFoodID())
+                            .subscribeOn(Schedulers.io())
                             .observeOn(AndroidSchedulers.mainThread())
                             .subscribe(sizeModel -> {
-                                // Send Local Data
+                                // Send local event bust
                                 EventBus.getDefault().post(new SizeLoadEvent(true, sizeModel.getResult()));
-                                int size = sizeModel.getResult().size();
-                                Log.e("SizeLoadEvent", "size is : " + size);
                             }, throwable -> {
                                 mDialog.dismiss();
                                 Toast.makeText(this, "[LOAD SIZE]" + throwable.getMessage(), Toast.LENGTH_SHORT).show();
                             }));
                 }
+
                 // If food only have  addon
                 if (event.getFoods().isAddon()) {
-                    mDialog.show();
-                    compositeDisposable.add(APIManage.getApi().getAddonOfFoods(Common.API_KEY, event.getFoods().getMenuId())
+                    compositeDisposable.add(APIManage.getApi().getAddonOfFoods(Common.API_KEY, event.getFoods().getFoodID())
                             .subscribeOn(Schedulers.io())
                             .observeOn(AndroidSchedulers.mainThread())
                             .subscribe(addonModel -> {
                                 mDialog.dismiss();
+                                Log.d(TAG, "displayFoodDetail: "+addonModel.getResult().size());
                                 EventBus.getDefault().post(new AddonLoadEvent(true, addonModel.getResult()));
                             }, throwable -> {
                                 Toast.makeText(this, "[LOAD ADDON]" + throwable.getMessage(), Toast.LENGTH_SHORT).show();
@@ -199,10 +192,10 @@ public class FoodDetailActivity extends BaseActivity {
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void displaySize(SizeLoadEvent event) {
+    public void displaySize(SizeLoadEvent sizeLoadEvent) {
         Log.d("displaySize", "Called");
-        if (event.isSuccess()) {
-            for (Size size : event.getSizeList()) {
+        if (sizeLoadEvent.isSuccess()) {
+            for (Size size : sizeLoadEvent.getSizeList()) {
                 RadioButton radioButton = new RadioButton(this);
                 radioButton.setOnCheckedChangeListener((buttonView, isChecked) -> {
                     if (isChecked)
@@ -239,13 +232,14 @@ public class FoodDetailActivity extends BaseActivity {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void displayAddon(AddonLoadEvent event) {
         Log.d(TAG, "displayAddon: called!!");
-        Log.d(TAG, "displayAddon: "+event.getAddonList().get(0).toString());
-        if(event.isSucccess()){
+        Log.d(TAG, "displayAddon: " + event.getAddonList().get(0).toString());
+        if (event.isSucccess()) {
             recycler_addon.setHasFixedSize(true);
             recycler_addon.setLayoutManager(new LinearLayoutManager(this));
             recycler_addon.setAdapter(new AddonAdapter(FoodDetailActivity.this, event.getAddonList()));
         }
     }
+
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
     public void priceChange(AddOnEventChange eventChange) {
         Log.d(TAG, "priceChange: called!!");

@@ -1,5 +1,4 @@
 package com.example.myrestaurant.Adapter;
-
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -45,8 +44,8 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Re
     @Override
     public void onBindViewHolder(@NonNull RestaurantHolder holder, int position) {
         Picasso.get().load(mRestaurantList.get(position).getImage()).into(holder.img_restaurant);
-        holder.txt_restaurant_name.setText(new StringBuilder(mRestaurantList.get(position).getRestaurantName()));
-        holder.txt_restaurant_address.setText(new StringBuilder(mRestaurantList.get(position).getRestaurantAddress()));
+        holder.txt_restaurant_name.setText(mRestaurantList.get(position).getRestaurantName());
+        holder.txt_restaurant_address.setText(mRestaurantList.get(position).getRestaurantAddress());
 
          holder.setOnRecyclerViewClickListener((view,i)->{
            Common.currentRestaurant=mRestaurantList.get(i);
@@ -68,12 +67,13 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Re
     }
 
      class RestaurantHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+         @BindView(R.id.txt_restaurant_name)
+         TextView txt_restaurant_name;
+         @BindView(R.id.txt_restaurant_address)
+         TextView txt_restaurant_address;
          @BindView(R.id.img_restaurant)
-        ImageView img_restaurant;
-        @BindView(R.id.txt_restaurant_name)
-        TextView txt_restaurant_name;
-        @BindView(R.id.txt_restaurant_address)
-        TextView txt_restaurant_address;
+         ImageView img_restaurant;
+
 
          IOnRecyclerViewClickListener onRecyclerViewClickListener;
          public void setOnRecyclerViewClickListener(IOnRecyclerViewClickListener onRecyclerViewClickListener) {

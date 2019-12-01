@@ -11,7 +11,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-
 import com.example.myrestaurant.API.APIManage;
 import com.example.myrestaurant.Base.BaseActivity;
 import com.example.myrestaurant.Common.Common;
@@ -21,7 +20,6 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -63,8 +61,8 @@ public class LoginActivity extends BaseActivity {
     public void showProgressDialog() {
         if (mDialog == null) {
             mDialog = new SpotsDialog.Builder()
-                    .setContext(this)
-                    .setCancelable(false).build();
+            .setContext(this)
+            .setCancelable(false).build();
         }
         mDialog.setMessage("...Loading");
         mDialog.show();
@@ -86,7 +84,7 @@ public class LoginActivity extends BaseActivity {
     protected void onStart() {
         super.onStart();
         // Check if user is signed in (non-null) and update UI accordingly.
-        FirebaseUser currentUser = mAuth.getCurrentUser();
+        // FirebaseUser currentUser = mAuth.getCurrentUser();
     }
 
     @OnClick(R.id.btnSignIn)
@@ -106,7 +104,7 @@ public class LoginActivity extends BaseActivity {
                             if (userPhone.equals(Common.currentUser.getUserPhone()) && userPassword.equals(Common.currentUser.getUserPassword())) {
                                 Toast.makeText(activity, " UserLogin : Success ", Toast.LENGTH_SHORT).show();
                                 startActivity(new Intent(LoginActivity.this, HomeActivity.class));
-                            }else{
+                            } else {
                                 Toast.makeText(activity, "UserPhone Or UserPassword Invalid ,Please Try Again ", Toast.LENGTH_SHORT).show();
                                 hideProgressDialog();
                             }

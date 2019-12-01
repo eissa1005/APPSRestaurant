@@ -14,7 +14,7 @@ public class Addon {
     private String description;
 
     @SerializedName("extraPrice")
-    private float extraPrice;
+    private double extraPrice;
 
     public int getId() {
         return id;
@@ -40,11 +40,11 @@ public class Addon {
         this.description = description;
     }
 
-    public float getExtraPrice() {
+    public double getExtraPrice() {
         return extraPrice;
     }
 
-    public void setExtraPrice(float extraPrice) {
+    public void setExtraPrice(double extraPrice) {
         this.extraPrice = extraPrice;
     }
 
