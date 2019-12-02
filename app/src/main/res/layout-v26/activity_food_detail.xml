@@ -97,51 +97,25 @@
                         android:layout_height="wrap_content"
                         android:orientation="vertical">
 
-                        <LinearLayout
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/magnifika"
+                            android:text="@string/size"
+                            android:textSize="22sp" />
+
+                        <RadioGroup
+                            android:id="@+id/radio_group_size"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="horizontal">
+                            android:orientation="horizontal"
+                            android:textAlignment="center"
+                            android:background="@color/buttonColor"
+                            android:focusedByDefault="true"
+                            android:weightSum="3">
 
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:fontFamily="@font/magnifika"
-                                android:text="@string/size"
-                                android:textSize="22sp" />
 
-                            <RadioGroup
-                                android:id="@+id/radio_group_size"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:orientation="horizontal"
-                                android:weightSum="3">
-
-                                <RadioButton
-                                    android:id="@+id/radio_Small"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:textSize="18sp"
-                                    android:fontFamily="@font/robotomedium"
-                                    android:checked="true"/>
-                                <RadioButton
-                                    android:id="@+id/radio_Medium"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:textSize="18sp"
-                                    android:fontFamily="@font/robotomedium"
-                                    />
-                                <RadioButton
-                                    android:id="@+id/radio_Large"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:textSize="18sp"
-                                    android:fontFamily="@font/robotomedium"
-                                    />
-
-                            </RadioGroup>
-
-                        </LinearLayout>
-
+                        </RadioGroup>
 
                     </LinearLayout>
 

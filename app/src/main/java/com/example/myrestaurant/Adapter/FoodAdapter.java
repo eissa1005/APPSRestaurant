@@ -21,6 +21,7 @@ import com.example.myrestaurant.Model.EventBus.FoodDetailEvent;
 import com.example.myrestaurant.Model.Response.Foods;
 import com.example.myrestaurant.R;
 import com.example.myrestaurant.UI.FoodDetailActivity;
+import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 import org.greenrobot.eventbus.EventBus;
 import java.util.List;
@@ -83,8 +84,8 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.FoodHolder> {
                 cartItem.setFoodQuantity(1);
                 cartItem.setUserPhone(Common.currentUser.getUserPhone());
                 cartItem.setRestaurantId(Common.currentRestaurant.getRestaurantId());
-                cartItem.setFoodAddon("NORMAL");
-                cartItem.setFoodSize("NORMAL");
+               // cartItem.setFoodAddon(new Gson().toJson(Common.addonList));
+                cartItem.setFoodSize(listFoods.get(i).isSize());
                 cartItem.setFoodExtraPrice(0.0);
                 cartItem.setFbid(Common.currentUser.getfBID());
                 mCompositeDisposable.add(mCartDataSource.insertOrReplaceAll(cartItem)

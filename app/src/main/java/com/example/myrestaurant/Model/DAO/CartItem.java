@@ -31,10 +31,10 @@ public class CartItem {
     private int restaurantId;
 
     @ColumnInfo(name = "foodAddon")
-    private String foodAddon;
+    private boolean foodAddon;
 
     @ColumnInfo(name = "foodSize")
-    private String foodSize;
+    private boolean foodSize;
 
     @ColumnInfo(name = "foodExtraPrice")
     private Double foodExtraPrice;
@@ -101,19 +101,19 @@ public class CartItem {
         this.restaurantId = restaurantId;
     }
 
-    public String getFoodAddon() {
+    public boolean getFoodAddon() {
         return foodAddon;
     }
 
-    public void setFoodAddon(String foodAddon) {
+    public void setFoodAddon(boolean foodAddon) {
         this.foodAddon = foodAddon;
     }
 
-    public String getFoodSize() {
+    public boolean getFoodSize() {
         return foodSize;
     }
 
-    public void setFoodSize(String foodSize) {
+    public void setFoodSize(boolean foodSize) {
         this.foodSize = foodSize;
     }
 
