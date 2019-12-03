@@ -34,7 +34,9 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartHolder> {
 
     @Override
     public int getItemCount() {
-        return 0;
+        if(cartItemList == null)return  0;
+        else
+            return  cartItemList.size();
     }
 
     Unbinder unbinder;

@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName;
 public class User {
 
     @SerializedName("FBID")
-    private String fBID;
+    private int fBID;
 
     @SerializedName("userName")
     private String userName;
@@ -31,11 +31,11 @@ public class User {
     private String twitterId;
 
 
-    public String getfBID() {
+    public int getfBID() {
         return fBID;
     }
 
-    public void setfBID(String fBID) {
+    public void setfBID(int fBID) {
         this.fBID = fBID;
     }
 

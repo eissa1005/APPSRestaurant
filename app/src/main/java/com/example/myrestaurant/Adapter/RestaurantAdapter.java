@@ -67,7 +67,7 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Re
     }
 
      class RestaurantHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-         @BindView(R.id.txt_restaurant_name)
+         @BindView(R.id.txt_restaurantName)
          TextView txt_restaurant_name;
          @BindView(R.id.txt_restaurant_address)
          TextView txt_restaurant_address;

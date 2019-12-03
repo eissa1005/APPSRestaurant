@@ -1,10 +1,12 @@
 package com.example.myrestaurant.Common;
 
 import com.example.myrestaurant.Model.Response.Addon;
+import com.example.myrestaurant.Model.Response.FavoriteOnlyId;
 import com.example.myrestaurant.Model.Response.Restaurant;
 import com.example.myrestaurant.Model.Response.User;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public class Common {
@@ -17,6 +19,24 @@ public class Common {
     public  static User currentUser;
     public  static Restaurant currentRestaurant;
     public static Set<Addon> addonList = new HashSet<>();
+    public static List<FavoriteOnlyId> currentFavOfRestaurant;
+    public static boolean checkFavorite(int id) {
+        boolean result = false;
+        for (FavoriteOnlyId item : currentFavOfRestaurant) {
+            if (item.getFoodId() == id) {
+                result = true;
+            }
+        }
+        return result;
+    }
+
+    public static void removeFavorite(int id) {
+        for (FavoriteOnlyId item : currentFavOfRestaurant) {
+            if (item.getFoodId() == id) {
+                currentFavOfRestaurant.remove(item);
+            }
+        }
+    }
 
 
 

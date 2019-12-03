@@ -1,5 +1,6 @@
 package com.example.myrestaurant.UI;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import com.example.myrestaurant.API.APIManage;
@@ -149,6 +150,7 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
             displayRestaurant(event.getRestaurantList());
             int sizeListRestaurant = event.getRestaurantList().size();
             Log.e("sizeListRestaurant", "Size of Restaurnt Banner : " + sizeListRestaurant);
+            Common.currentRestaurant=event.getRestaurantList().get(0);
         } else {
             Toast.makeText(this, "[RESTAURANT LOAD]" + event.getMessage(), Toast.LENGTH_SHORT).show();
             Log.e("Message", event.getMessage());
@@ -216,7 +218,7 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
         } else if (id == R.id.nav_update_info) {
             // startActivity(new Intent(HomeActivity.this, UpdateInfoActivity.class));
         } else if (id == R.id.nav_fav) {
-            //startActivity(new Intent(HomeActivity.this, FavoriteActivity.class));
+            startActivity(new Intent(HomeActivity.this, FavoriteActivity.class));
         }
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);

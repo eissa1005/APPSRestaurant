@@ -1,6 +1,6 @@
 package com.example.myrestaurant.Model.DAO;
 
-import androidx.annotation.Nullable;
+import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
@@ -9,9 +9,10 @@ import androidx.room.PrimaryKey;
 public class CartItem {
 
     @PrimaryKey
-    @Nullable
+    @NonNull
     @ColumnInfo(name = "foodId")
     private int foodId;
+
     @ColumnInfo(name = "foodName")
     private String foodName;
 
@@ -31,16 +32,17 @@ public class CartItem {
     private int restaurantId;
 
     @ColumnInfo(name = "foodAddon")
-    private boolean foodAddon;
+    private String foodAddon;
 
     @ColumnInfo(name = "foodSize")
-    private boolean foodSize;
+    private String foodSize;
 
     @ColumnInfo(name = "foodExtraPrice")
     private Double foodExtraPrice;
 
     @ColumnInfo(name = "fbid")
-    private String fbid;
+    private int fbid;
+
 
     public CartItem() {
     }
@@ -101,19 +103,19 @@ public class CartItem {
         this.restaurantId = restaurantId;
     }
 
-    public boolean getFoodAddon() {
+    public String getFoodAddon() {
         return foodAddon;
     }
 
-    public void setFoodAddon(boolean foodAddon) {
+    public void setFoodAddon(String foodAddon) {
         this.foodAddon = foodAddon;
     }
 
-    public boolean getFoodSize() {
+    public String getFoodSize() {
         return foodSize;
     }
 
-    public void setFoodSize(boolean foodSize) {
+    public void setFoodSize(String foodSize) {
         this.foodSize = foodSize;
     }
 
@@ -125,11 +127,11 @@ public class CartItem {
         this.foodExtraPrice = foodExtraPrice;
     }
 
-    public String getFbid() {
+    public int getFbid() {
         return fbid;
     }
 
-    public void setFbid(String fbid) {
+    public void setFbid(int fbid) {
         this.fbid = fbid;
     }
 }

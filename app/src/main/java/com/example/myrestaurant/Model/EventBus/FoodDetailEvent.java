@@ -3,13 +3,18 @@ package com.example.myrestaurant.Model.EventBus;
 import com.example.myrestaurant.Model.Response.Foods;
 
 public class FoodDetailEvent {
-
     private boolean success;
-    private Foods foods;
+    private String message;
+    private Foods food;
 
-    public FoodDetailEvent(boolean success, Foods foods) {
+    public FoodDetailEvent(boolean success, Foods food) {
         this.success = success;
-        this.foods = foods;
+        this.food = food;
+    }
+
+    public FoodDetailEvent(boolean success, String message) {
+        this.success = success;
+        this.message = message;
     }
 
     public boolean isSuccess() {
@@ -20,11 +25,19 @@ public class FoodDetailEvent {
         this.success = success;
     }
 
-    public Foods getFoods() {
-        return foods;
+    public String getMessage() {
+        return message;
     }
 
-    public void setFoods(Foods foods) {
-        this.foods = foods;
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    public Foods getFood() {
+        return food;
+    }
+
+    public void setFood(Foods food) {
+        this.food = food;
     }
 }
