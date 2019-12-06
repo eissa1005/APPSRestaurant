@@ -10,81 +10,81 @@ public class CartItem {
 
     @PrimaryKey
     @NonNull
-    @ColumnInfo(name = "foodId")
-    private int foodId;
+    @ColumnInfo(name = "FoodId")
+    private int FoodId;
 
-    @ColumnInfo(name = "foodName")
-    private String foodName;
+    @ColumnInfo(name = "FoodName")
+    private String FoodName;
 
-    @ColumnInfo(name = "foodImage")
-    private String foodImage;
+    @ColumnInfo(name = "FoodImage")
+    private String FoodImage;
 
-    @ColumnInfo(name = "foodPrice")
-    private Double foodPrice;
+    @ColumnInfo(name = "FoodPrice")
+    private Double FoodPrice;
 
-    @ColumnInfo(name = "foodQuantity")
-    private int foodQuantity;
+    @ColumnInfo(name = "FoodQuantity")
+    private int FoodQuantity;
 
     @ColumnInfo(name = "userPhone")
     private String userPhone;
 
-    @ColumnInfo(name = "restaurantId")
-    private int restaurantId;
+    @ColumnInfo(name = "RestaurantId")
+    private int RestaurantId;
 
-    @ColumnInfo(name = "foodAddon")
-    private String foodAddon;
+    @ColumnInfo(name = "FoodAddon")
+    private String FoodAddon;
 
-    @ColumnInfo(name = "foodSize")
-    private String foodSize;
+    @ColumnInfo(name = "FoodSize")
+    private String FoodSize;
 
-    @ColumnInfo(name = "foodExtraPrice")
-    private Double foodExtraPrice;
+    @ColumnInfo(name = "FoodExtraPrice")
+    private Double FoodExtraPrice;
 
-    @ColumnInfo(name = "fbid")
-    private int fbid;
+    @ColumnInfo(name = "FBID")
+    private String FBID;
 
 
     public CartItem() {
     }
 
     public int getFoodId() {
-        return foodId;
+        return FoodId;
     }
 
     public void setFoodId(int foodId) {
-        this.foodId = foodId;
+        FoodId = foodId;
     }
 
     public String getFoodName() {
-        return foodName;
+        return FoodName;
     }
 
     public void setFoodName(String foodName) {
-        this.foodName = foodName;
+        FoodName = foodName;
     }
 
     public String getFoodImage() {
-        return foodImage;
+        return FoodImage;
     }
 
     public void setFoodImage(String foodImage) {
-        this.foodImage = foodImage;
+        FoodImage = foodImage;
     }
 
     public Double getFoodPrice() {
-        return foodPrice;
+        return FoodPrice;
     }
 
     public void setFoodPrice(Double foodPrice) {
-        this.foodPrice = foodPrice;
+        FoodPrice = foodPrice;
     }
 
     public int getFoodQuantity() {
-        return foodQuantity;
+        return FoodQuantity;
     }
 
     public void setFoodQuantity(int foodQuantity) {
-        this.foodQuantity = foodQuantity;
+        FoodQuantity = foodQuantity;
     }
 
     public String getUserPhone() {
@@ -96,42 +96,42 @@ public class CartItem {
     }
 
     public int getRestaurantId() {
-        return restaurantId;
+        return RestaurantId;
     }
 
     public void setRestaurantId(int restaurantId) {
-        this.restaurantId = restaurantId;
+        RestaurantId = restaurantId;
     }
 
     public String getFoodAddon() {
-        return foodAddon;
+        return FoodAddon;
     }
 
     public void setFoodAddon(String foodAddon) {
-        this.foodAddon = foodAddon;
+        FoodAddon = foodAddon;
     }
 
     public String getFoodSize() {
-        return foodSize;
+        return FoodSize;
     }
 
     public void setFoodSize(String foodSize) {
-        this.foodSize = foodSize;
+        FoodSize = foodSize;
     }
 
     public Double getFoodExtraPrice() {
-        return foodExtraPrice;
+        return FoodExtraPrice;
     }
 
     public void setFoodExtraPrice(Double foodExtraPrice) {
-        this.foodExtraPrice = foodExtraPrice;
+        FoodExtraPrice = foodExtraPrice;
     }
 
-    public int getFbid() {
-        return fbid;
+    public String getFBID() {
+        return FBID;
     }
 
-    public void setFbid(int fbid) {
-        this.fbid = fbid;
+    public void setFBID(String FBID) {
+        this.FBID = FBID;
     }
 }

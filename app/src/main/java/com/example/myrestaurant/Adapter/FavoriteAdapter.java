@@ -62,10 +62,10 @@ public class FavoriteAdapter  extends RecyclerView.Adapter<FavoriteAdapter.Favor
         holder.txt_food_name.setText(mFavoriteList.get(position).getFoodName());
         holder.txt_food_price.setText(new StringBuilder(mContext.getString(R.string.money_sign))
                 .append(mFavoriteList.get(position).getPrice()));
-        holder.txt_restaurantName.setText(mFavoriteList.get(position).getRestaurantName());
+        holder.txt_restaurant_name.setText(mFavoriteList.get(position).getRestaurantName());
 
         // Event
-        holder.setListener((view, i) -> {
+        holder.setOnRecyclerViewClickListener((view, i) -> {
             mCompositeDisposable.add(APIManage.getApi().getFoodById(Common.API_KEY, mFavoriteList.get(i).getFoodId())
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
@@ -108,20 +108,19 @@ public class FavoriteAdapter  extends RecyclerView.Adapter<FavoriteAdapter.Favor
         TextView txt_food_name;
         @BindView(R.id.txt_food_price)
         TextView txt_food_price;
-        @BindView(R.id.txt_restaurantName)
-        TextView txt_restaurantName;
+        @BindView(R.id.txt_restaurant_name)
+        TextView txt_restaurant_name;
 
         Unbinder mUnbinder;
         IOnRecyclerViewClickListener onRecyclerViewClickListener;
 
-        public void setListener(IOnRecyclerViewClickListener onRecyclerViewClickListener) {
+        public void setOnRecyclerViewClickListener(IOnRecyclerViewClickListener onRecyclerViewClickListener) {
             this.onRecyclerViewClickListener = onRecyclerViewClickListener;
         }
 
         public FavoriteHolder(@NonNull View itemView) {
             super(itemView);
             mUnbinder = ButterKnife.bind(this, itemView);
-
             itemView.setOnClickListener(this);
         }
 

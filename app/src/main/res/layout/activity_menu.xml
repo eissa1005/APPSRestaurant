@@ -31,7 +31,7 @@
         </com.google.android.material.appbar.AppBarLayout>
 
         <com.flaviofaria.kenburnsview.KenBurnsView
-            android:id="@+id/img_restaurant"
+            android:id="@+id/img_menu"
             android:scaleType="centerCrop"
             android:layout_width="match_parent"
             android:layout_height="150dp" />

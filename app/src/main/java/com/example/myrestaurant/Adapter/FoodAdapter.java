@@ -28,19 +28,19 @@ import com.example.myrestaurant.Model.Response.Foods;
 import com.example.myrestaurant.R;
 import com.example.myrestaurant.UI.FoodDetailActivity;
 import com.squareup.picasso.Picasso;
+
 import org.greenrobot.eventbus.EventBus;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
-
-import static lib.android.paypal.com.magnessdk.network.c.v;
-
 
 public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.FoodHolder> {
 
@@ -49,6 +49,7 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.FoodHolder> {
     private CompositeDisposable compositeDisposable;
     private CartDataSource mCartDataSource;
     private Map<String, Favorite> favoriteMap;
+
     public FoodAdapter(Context context, List<Foods> listFoods) {
         this.mContext = context;
         this.listFoods = listFoods;
@@ -64,7 +65,8 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.FoodHolder> {
     @NonNull
     @Override
     public FoodHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_food, parent, false);
+        View view = LayoutInflater.from(mContext)
+                .inflate(R.layout.layout_food, parent, false);
         return new FoodHolder(view);
     }
 
@@ -89,64 +91,66 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.FoodHolder> {
             // Default, all item is no favorite
             holder.img_fav.setTag(false);
         }
+        // Event
         // Favorite Event Img_fav ClickListene
         holder.img_fav.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                    ImageView fav = ((ImageView) v);
-                    if (((boolean) fav.getTag()))
-                    {
-                        compositeDisposable.add(APIManage.getApi().removeFavorite(Common.API_KEY,
-                                Common.currentUser.getfBID(),
-                                listFoods.get(position).getFoodID(),
-                                Common.currentRestaurant.getRestaurantId())
+                ImageView fav = ((ImageView) v);
+                if (((boolean) fav.getTag()))
+                {
+                    compositeDisposable.add(APIManage.getApi().removeFavorite(Common.API_KEY,
+                            Common.currentUser.getfBID(),
+                            listFoods.get(position).getFoodID(),
+                            Common.currentRestaurant.getRestaurantId())
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe(favoriteModel -> {
+                                fav.setImageResource(R.drawable.ic_favorite_border_button_color_24dp);
+                                fav.setTag(false);
+                                if (Common.currentFavOfRestaurant != null) {
+                                    Common.removeFavorite(listFoods.get(position).getFoodID());
+                                }
+                            }, throwable -> {
+                                Toast.makeText(mContext, "[ Remove Favorite]" + throwable.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                            }));
+                }
+                else {
+                    // Add Favorite by HashMap
+                    try {
+                        Favorite favorite = new Favorite();
+                        favorite.setFBID(Common.currentUser.getfBID());
+                        favorite.setFoodId(listFoods.get(position).getFoodID());
+                        favorite.setRestaurantId(Common.currentRestaurant.getRestaurantId());
+                        favorite.setRestaurantName(Common.currentRestaurant.getRestaurantName());
+                        favorite.setFoodName(listFoods.get(position).getName());
+                        favorite.setFoodImage(listFoods.get(position).getImage());
+                        favorite.setPrice(listFoods.get(position).getPrice());
+                        favoriteMap.put("favorite", favorite);
+                        Log.d("favoriteMap", favorite.getFoodName());
+
+                        compositeDisposable.add(APIManage.getApi()
+                                .AddFavorite(Common.API_KEY, favoriteMap)
                                 .subscribeOn(Schedulers.io())
                                 .observeOn(AndroidSchedulers.mainThread())
                                 .subscribe(favoriteModel -> {
-                                        fav.setImageResource(R.drawable.ic_favorite_border_button_color_24dp);
-                                        fav.setTag(false);
-                                        if (Common.currentFavOfRestaurant != null) {
-                                            Common.removeFavorite(listFoods.get(position).getFoodID());
-                                        }
+                                    fav.setImageResource(R.drawable.ic_favorite_button_color_24dp);
+                                    fav.setTag(true);
+                                    Log.d("favoriteModel", "Called");
+                                    if (Common.currentFavOfRestaurant != null) {
+                                        Common.currentFavOfRestaurant.add(new FavoriteOnlyId(listFoods.get(position).getFoodID()));
+                                    }
                                 }, throwable -> {
-                                    Toast.makeText(mContext, "[ Remove Favoritel]" + throwable.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(mContext, " [ Add Favorite ] " + throwable.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
                                 }));
                     }
-                    else {
-                        // Add Favorite by HashMap
-                        try {
-                            Favorite favorite = new Favorite();
-                            favorite.setFBID(Common.currentUser.getfBID());
-                            favorite.setFoodId(listFoods.get(position).getFoodID());
-                            favorite.setRestaurantId(Common.currentRestaurant.getRestaurantId());
-                            favorite.setRestaurantName(Common.currentRestaurant.getRestaurantName());
-                            favorite.setFoodName(listFoods.get(position).getName());
-                            favorite.setFoodImage(listFoods.get(position).getImage());
-                            favorite.setPrice(listFoods.get(position).getPrice());
-                            favoriteMap.put("favorite", favorite);
-                            Log.d("favoriteMap", favorite.getFoodName());
-
-                            compositeDisposable.add(APIManage.getApi()
-                                    .AddFavorite(Common.API_KEY, favoriteMap)
-                                    .subscribeOn(Schedulers.io())
-                                    .observeOn(AndroidSchedulers.mainThread())
-                                    .subscribe(favoriteModel -> {
-                                        Log.e("favoriteModel", "Called");
-                                        fav.setImageResource(R.drawable.ic_favorite_button_color_24dp);
-                                        fav.setTag(true);
-                                        if (Common.currentFavOfRestaurant != null) {
-                                            Common.currentFavOfRestaurant.add(new FavoriteOnlyId(listFoods.get(position).getFoodID()));
-                                        }
-                                    }, throwable -> {
-                                        Toast.makeText(mContext, " [ Add Favorite ] " + throwable.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
-                                    }));
-                        }
-                        catch(Exception ex){
-                        Log.e("Exception",ex.getMessage());
-                        }
+                    catch(Exception ex){
+                        Log.e("FavoriteException",ex.getMessage());
                     }
                 }
+            }
         });
+
 
         holder.setOnFoodDetailOrCartClickListener((view, i, isDetail) -> {
             // Create CartItem
@@ -155,10 +159,8 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.FoodHolder> {
                 EventBus.getDefault().postSticky(new FoodDetailEvent(true, listFoods.get(i)));
                 mContext.startActivity(new Intent(mContext, FoodDetailActivity.class));
 
-            }
-
-            else {
-                 CartItem cartItem = new CartItem();
+            } else {
+                CartItem cartItem = new CartItem();
                 cartItem.setFoodId(listFoods.get(i).getFoodID());
                 cartItem.setFoodName(listFoods.get(i).getName());
                 cartItem.setFoodPrice(listFoods.get(i).getPrice());
@@ -169,13 +171,13 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.FoodHolder> {
                 cartItem.setFoodAddon("NORMAL");
                 cartItem.setFoodSize("NORMAL");
                 cartItem.setFoodExtraPrice(0.0);
-                cartItem.setFbid(Common.currentUser.getfBID());
+                cartItem.setFBID(Common.currentUser.getfBID());
                 compositeDisposable.add(mCartDataSource.insertOrReplaceAll(cartItem)
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(() -> {
                             Toast.makeText(mContext, "Add To Cart " + cartItem.getFoodName(), Toast.LENGTH_SHORT).show();
-                          //  Log.e("cartItem", cartItem.getFbid());
+                            //  Log.e("cartItem", cartItem.getFbid());
                         }, throwable -> {
                             Toast.makeText(mContext, "AddFailure " + throwable.getMessage(), Toast.LENGTH_SHORT).show();
                         }));

@@ -38,6 +38,9 @@ public class FavoriteActivity extends BaseActivity {
     CompositeDisposable compositeDisposable;
     private LayoutAnimationController mLayoutAnimationController;
 
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Log.d(TAG,"Create Called");
@@ -57,14 +60,14 @@ public class FavoriteActivity extends BaseActivity {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(favoriteModel -> {
                     if (favoriteModel.isSuccess()) {
-                        mDialog.dismiss();
                         adapter = new FavoriteAdapter(FavoriteActivity.this, favoriteModel.getResult());
                         recycler_fav.setAdapter(adapter);
                     } else {
                         mDialog.dismiss();
-                        Toast.makeText(this, "[Load Favorite]" + favoriteModel.getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, "[GET FAV RESULT]" + favoriteModel.getMessage(), Toast.LENGTH_SHORT).show();
 
                     }
+                    mDialog.dismiss();
                 }, throwable -> {
                     mDialog.dismiss();
                     Toast.makeText(this, "[Load Favorite]" + throwable.getMessage(), Toast.LENGTH_SHORT).show();
@@ -72,16 +75,20 @@ public class FavoriteActivity extends BaseActivity {
     }
 
     private void initView() {
-        ButterKnife.bind(activity);
-        toolbar.setTitle(getString(R.string.menu_fav));
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        Log.d(TAG, "initView: called!!");
+        ButterKnife.bind(this);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         recycler_fav.setLayoutManager(layoutManager);
         recycler_fav.addItemDecoration(new DividerItemDecoration(this, layoutManager.getOrientation()));
         mLayoutAnimationController = AnimationUtils.loadLayoutAnimation(this, R.anim.layout_item_from_left);
+
+
+        toolbar.setTitle(getString(R.string.menu_fav));
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
     }
 
     private void init() {

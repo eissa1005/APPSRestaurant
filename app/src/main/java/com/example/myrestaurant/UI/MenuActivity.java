@@ -1,6 +1,7 @@
 package com.example.myrestaurant.UI;
 
 import android.app.AlertDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -39,7 +40,7 @@ import io.reactivex.schedulers.Schedulers;
 
 public class MenuActivity extends BaseActivity {
     private static final String TAG = MenuActivity.class.getSimpleName();
-    @BindView(R.id.img_restaurant)
+    @BindView(R.id.img_menu)
     KenBurnsView img_restaurant;
     @BindView(R.id.recycler_category)
     RecyclerView recycler_category;
@@ -48,7 +49,7 @@ public class MenuActivity extends BaseActivity {
     @BindView(R.id.fab)
     FloatingActionButton btn_cart;
     @BindView(R.id.badge)
-    NotificationBadge notificationBadge;
+    NotificationBadge badge;
     CompositeDisposable mCompositeDisposable;
     AlertDialog mDialog;
     CategoryAdapter adapter;
@@ -81,7 +82,7 @@ public class MenuActivity extends BaseActivity {
 
                     @Override
                     public void onSuccess(Integer integer) {
-                     notificationBadge.setText(String.valueOf(integer));
+                        badge.setText(String.valueOf(integer));
                     }
 
                     @Override
@@ -97,6 +98,9 @@ public class MenuActivity extends BaseActivity {
         Log.d(TAG, "initView: called!!");
         ButterKnife.bind(activity);
         mLayoutAnimationController = AnimationUtils.loadLayoutAnimation(activity, R.anim.layout_item_from_left);
+        btn_cart.setOnClickListener(v -> {
+            startActivity(new Intent(MenuActivity.this, CartListActivity.class));
+        });
         GridLayoutManager layoutManager = new GridLayoutManager(this, 2);
         layoutManager.setOrientation(RecyclerView.VERTICAL);
         layoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {

@@ -14,18 +14,18 @@ import io.reactivex.Single;
 @Dao
 public interface CartDAO {
 
-    @Query("SELECT * FROM Cart WHERE fbid=:fbid AND restaurantId=:restaurantId")
-    Flowable<List<CartItem>> getAllCart(int fbid,int restaurantId );
+    @Query("SELECT * FROM Cart WHERE FBID=:FBID AND RestaurantId=:restaurantId")
+    Flowable<List<CartItem>> getAllCart(String FBID,int restaurantId );
 
-    @Query("SELECT COUNT(*) FROM Cart WHERE fbid=:fbid AND restaurantId=:restaurantId")
-    Single<Integer> countItemInCart(int fbid,int restaurantId );
+    @Query("SELECT COUNT(*) FROM Cart WHERE FBID=:FBID AND RestaurantId=:restaurantId")
+    Single<Integer> countItemInCart(String FBID,int restaurantId );
 
     // Total Value Sum(Price*QTY)
-    @Query("SELECT SUM(foodPrice*foodQuantity) FROM Cart WHERE fbid=:fbid AND restaurantId=:restaurantId")
-    Single<Long> sumPrice(int fbid, int restaurantId);
+    @Query("SELECT SUM(foodPrice*foodQuantity) FROM Cart WHERE FBID=:FBID AND RestaurantId=:restaurantId")
+    Single<Long> sumPrice(String FBID, int restaurantId);
 
-    @Query("SELECT * FROM Cart WHERE foodId=:foodId AND fbid=:fbid AND restaurantId=:restaurantId")
-    Single<CartItem> getItemInCart(String foodId, int fbid, int restaurantId);
+    @Query("SELECT * FROM Cart WHERE FoodId=:foodId AND FBID=:FBID AND RestaurantId=:restaurantId")
+    Single<CartItem> getItemInCart(int foodId, String FBID, int restaurantId);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     Completable insertOrReplaceAll(CartItem...cartItems);
@@ -36,6 +36,6 @@ public interface CartDAO {
     @Delete
     Single<Integer> deleteCart(CartItem cart);
 
-    @Query("DELETE FROM Cart WHERE fbid=:fbid AND restaurantId=:restaurantId")
-    Single<Integer> cleanCart(int fbid, int restaurantId);
+    @Query("DELETE FROM Cart WHERE FBID=:FBID AND RestaurantId=:restaurantId")
+    Single<Integer> cleanCart(String FBID, int restaurantId);
 }

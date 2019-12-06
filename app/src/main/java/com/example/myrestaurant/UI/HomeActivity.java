@@ -214,7 +214,7 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
         } else if (id == R.id.nav_nearby) {
             //startActivity(new Intent(HomeActivity.this, NearbyRestaurantActivity.class));
         } else if (id == R.id.nav_order_history) {
-            // startActivity(new Intent(HomeActivity.this, ViewOrderActivity.class));
+           // startActivity(new Intent(HomeActivity.this, ViewOrderActivity.class));
         } else if (id == R.id.nav_update_info) {
             // startActivity(new Intent(HomeActivity.this, UpdateInfoActivity.class));
         } else if (id == R.id.nav_fav) {

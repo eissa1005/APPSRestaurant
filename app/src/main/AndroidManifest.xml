@@ -14,10 +14,14 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="AllowBackup,GoogleAppIndexingWarning">
-        <activity android:name=".UI.FavoriteAc tivity>"
+        <activity android:name=".UI.PlaceOrderActivity"
             tools:ignore="InnerclassSeparator"></activity>
-        <activity android:name=".UI.CartListActivity"
-            tools:ignore="InnerclassSeparator"></activity>
+        <activity
+            android:name=".UI.FavoriteActivity"
+            tools:ignore="InnerclassSeparator" />
+        <activity
+            android:name=".UI.CartListActivity"
+            tools:ignore="InnerclassSeparator" />
         <activity
             android:name=".UI.FoodDetailActivity"
             tools:ignore="InnerclassSeparator" />

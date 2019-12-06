@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName;
 public class Favorite {
 
     @SerializedName("FBID")
-    private int fBID;
+    private String fBID;
 
     @SerializedName("FoodId")
     private int foodId;
@@ -41,11 +41,11 @@ public class Favorite {
         return price;
     }
 
-    public void setFBID(int fBID) {
+    public void setFBID(String fBID) {
         this.fBID = fBID;
     }
 
-    public int getFBID() {
+    public String getFBID() {
         return fBID;
     }
 
