@@ -15,10 +15,10 @@ import io.reactivex.Single;
 public interface CartDAO {
 
     @Query("SELECT * FROM Cart WHERE FBID=:FBID AND RestaurantId=:restaurantId")
-    Flowable<List<CartItem>> getAllCart(String FBID,int restaurantId );
+    Flowable<List<CartItem>> getAllCart(String FBID, int restaurantId);
 
     @Query("SELECT COUNT(*) FROM Cart WHERE FBID=:FBID AND RestaurantId=:restaurantId")
-    Single<Integer> countItemInCart(String FBID,int restaurantId );
+    Single<Integer> countItemInCart(String FBID, int restaurantId);
 
     // Total Value Sum(Price*QTY)
     @Query("SELECT SUM(foodPrice*foodQuantity) FROM Cart WHERE FBID=:FBID AND RestaurantId=:restaurantId")
@@ -28,7 +28,7 @@ public interface CartDAO {
     Single<CartItem> getItemInCart(int foodId, String FBID, int restaurantId);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    Completable insertOrReplaceAll(CartItem...cartItems);
+    Completable insertOrReplaceAll(CartItem... cartItems);
 
     @Update(onConflict = OnConflictStrategy.REPLACE)
     Single<Integer> updateCart(CartItem cart);

@@ -77,13 +77,13 @@ public interface APIService {
 
     @GET("foodById")
     Observable<FoodsModel> getFoodById(@Query("key") String apiKey,
-                                      @Query("FoodId") int FoodId);
+                                       @Query("FoodId") int FoodId);
 
 
     @POST("AddFavorite")
     @FormUrlEncoded
     Observable<FavoriteModel> AddFavorite(@Field("key") String key,
-                            @FieldMap Map<String,Favorite> favoriteMap );
+                                          @FieldMap Map<String, Favorite> favoriteMap);
 
     @POST("insertFavorite")
     @FormUrlEncoded
