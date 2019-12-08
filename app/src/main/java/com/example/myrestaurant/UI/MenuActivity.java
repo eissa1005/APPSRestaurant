@@ -71,7 +71,7 @@ public class MenuActivity extends BaseActivity {
 
     private void countCartByRestaurant() {
         Log.e("countCart","Called");
-        cartDataSource.countItemInCart(Common.currentUser.getfBID(), Common.currentRestaurant.getRestaurantId())
+        cartDataSource.countItemInCart(Common.currentUser.getFBID(), Common.currentRestaurant.getRestaurantId())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new SingleObserver<Integer>() {

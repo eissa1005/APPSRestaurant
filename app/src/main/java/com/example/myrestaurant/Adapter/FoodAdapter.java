@@ -100,7 +100,7 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.FoodHolder> {
                 if (((boolean) fav.getTag()))
                 {
                     compositeDisposable.add(APIManage.getApi().removeFavorite(Common.API_KEY,
-                            Common.currentUser.getfBID(),
+                            Common.currentUser.getFBID(),
                             listFoods.get(position).getFoodID(),
                             Common.currentRestaurant.getRestaurantId())
                             .subscribeOn(Schedulers.io())
@@ -119,7 +119,7 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.FoodHolder> {
                     // Add Favorite by HashMap
                     try {
                         Favorite favorite = new Favorite();
-                        favorite.setFBID(Common.currentUser.getfBID());
+                        favorite.setFBID(Common.currentUser.getFBID());
                         favorite.setFoodId(listFoods.get(position).getFoodID());
                         favorite.setRestaurantId(Common.currentRestaurant.getRestaurantId());
                         favorite.setRestaurantName(Common.currentRestaurant.getRestaurantName());
@@ -171,7 +171,7 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.FoodHolder> {
                 cartItem.setFoodAddon("NORMAL");
                 cartItem.setFoodSize("NORMAL");
                 cartItem.setFoodExtraPrice(0.0);
-                cartItem.setFBID(Common.currentUser.getfBID());
+                cartItem.setFBID(Common.currentUser.getFBID());
                 compositeDisposable.add(mCartDataSource.insertOrReplaceAll(cartItem)
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())

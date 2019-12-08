@@ -14,6 +14,7 @@ import android.widget.Toast;
 import com.example.myrestaurant.API.APIManage;
 import com.example.myrestaurant.Base.BaseActivity;
 import com.example.myrestaurant.Common.Common;
+import com.example.myrestaurant.Model.Response.Users;
 import com.example.myrestaurant.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -87,6 +88,7 @@ public class LoginActivity extends BaseActivity {
         // FirebaseUser currentUser = mAuth.getCurrentUser();
     }
 
+
     @OnClick(R.id.btnSignIn)
     public void loginUser(View view) {
         Log.e("Login", "Login Called");
@@ -100,7 +102,7 @@ public class LoginActivity extends BaseActivity {
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(userResponse -> {
                         if (userResponse.isSuccess()) {
-                            Common.currentUser = userResponse.getResult().get(0);
+                            Common.currentUser =userResponse.getResult().get(0);
                             if (userPhone.equals(Common.currentUser.getUserPhone()) && userPassword.equals(Common.currentUser.getUserPassword())) {
                                 Toast.makeText(activity, " UserLogin : Success ", Toast.LENGTH_SHORT).show();
                                 startActivity(new Intent(LoginActivity.this, HomeActivity.class));

@@ -48,6 +48,7 @@ public class CartListActivity extends BaseActivity {
     TextView txt_final_price;
     @BindView(R.id.btn_order)
     Button btn_order;
+    CartAdapter adapter;
 
     private CompositeDisposable compositeDisposable;
     private CartDataSource mCartDataSource;
@@ -74,7 +75,7 @@ public class CartListActivity extends BaseActivity {
 
     private void getAllItemInCart() {
         Log.d(TAG, "getAllItemInCart: called!!");
-        compositeDisposable.add(mCartDataSource.getAllCart(Common.currentUser.getfBID(),
+        compositeDisposable.add(mCartDataSource.getAllCart(Common.currentUser.getFBID(),
                 Common.currentRestaurant.getRestaurantId())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -84,13 +85,16 @@ public class CartListActivity extends BaseActivity {
                         btn_order.setText(getString(R.string.empty_cart));
                         btn_order.setEnabled(false);
                         btn_order.setBackgroundResource(android.R.color.darker_gray);
+                        adapter=new CartAdapter(CartListActivity.this,null);
+                        recycler_cart.setAdapter(adapter);
+                        txt_final_price.setText("0");
                     }
                     else {
                         btn_order.setText(getString(R.string.place_order));
                         btn_order.setEnabled(true);
                         btn_order.setBackgroundResource(R.color.colorPrimary);
 
-                        CartAdapter adapter = new CartAdapter(CartListActivity.this, cartItems);
+                        adapter = new CartAdapter(CartListActivity.this, cartItems);
                         recycler_cart.setAdapter(adapter);
                         recycler_cart.setLayoutAnimation(mLayoutAnimationController);
 
@@ -106,7 +110,7 @@ public class CartListActivity extends BaseActivity {
 
     private void calculateCartTotalPrice() {
         Log.d(TAG, "calculateCartTotalPrice: called!!");
-        mCartDataSource.sumPrice(Common.currentUser.getfBID(), Common.currentRestaurant.getRestaurantId())
+        mCartDataSource.sumPrice(Common.currentUser.getFBID(), Common.currentRestaurant.getRestaurantId())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new SingleObserver<Long>() {
@@ -120,6 +124,7 @@ public class CartListActivity extends BaseActivity {
                         if (aLong == 0) {
                             btn_order.setText(getString(R.string.empty_cart));
                             btn_order.setEnabled(false);
+                            txt_final_price.setText("0");
                             btn_order.setBackgroundResource(android.R.color.darker_gray);
                         } else {
                             btn_order.setText(getString(R.string.place_order));
@@ -184,6 +189,7 @@ public class CartListActivity extends BaseActivity {
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
     public void calculatePrice(CalculatePriceEvent event) {
         if (event != null) {
+
             calculateCartTotalPrice();
         }
     }

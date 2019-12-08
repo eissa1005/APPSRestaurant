@@ -55,7 +55,7 @@ public class FavoriteActivity extends BaseActivity {
     private void getAllFavorite() {
         mDialog.show();
         Log.d(TAG,"getAllFavorite : Called");
-        compositeDisposable.add(APIManage.getApi().getFavoriteById(Common.API_KEY,Common.currentUser.getfBID())
+        compositeDisposable.add(APIManage.getApi().getFavoriteById(Common.API_KEY,Common.currentUser.getFBID())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(favoriteModel -> {

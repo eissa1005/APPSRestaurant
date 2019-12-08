@@ -4,9 +4,9 @@ import androidx.appcompat.widget.Toolbar;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -74,6 +74,7 @@ public class PlaceOrderActivity extends BaseActivity implements DatePickerDialog
     Button btn_proceed;
     @BindView(R.id.toolbar)
     Toolbar toolbar;
+
     private boolean isSelectedDate = false;
     private boolean isAddNewAddress = false;
 
@@ -105,25 +106,32 @@ public class PlaceOrderActivity extends BaseActivity implements DatePickerDialog
         btn_add_new_address.setOnClickListener((v -> {
             isAddNewAddress = true;
             chb_default_address.setChecked(false);
+            @SuppressLint("InflateParams")
+            View layout_add_new_address = LayoutInflater.from(PlaceOrderActivity.this)
+                    .inflate(R.layout.layout_add_new_address, null);
+
+            EditText edt_new_address = layout_add_new_address.findViewById(R.id.edt_add_new_address);
+            edt_new_address.setText(txt_new_address.getText().toString());
+
+            androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(PlaceOrderActivity.this)
+                    .setTitle("Add New Address")
+                    .setView(layout_add_new_address)
+                    .setNegativeButton("CANCEL", (dialog, which) -> {
+                        dialog.dismiss();
+                    })
+                    .setPositiveButton("ADD", (dialog, which) -> {
+                        if(!TextUtils.isEmpty(edt_new_address.getText().toString())) {
+                            txt_new_address.setText(edt_new_address.getText().toString());
+                        }else{
+                            edt_new_address.setError("Please enter new Address");
+                            edt_new_address.setFocusable(true);
+                        }
+                    });
+
+            androidx.appcompat.app.AlertDialog addNewAdressDialog = builder.create();
+            addNewAdressDialog.show();
         }));
-        Context context;
-        @SuppressLint("InflateParams") View layout_add_new_address = LayoutInflater.from(PlaceOrderActivity.this)
-                .inflate(R.layout.layout_add_new_address, null);
-        EditText edt_new_address = layout_add_new_address.findViewById(R.id.txt_new_address);
-        edt_new_address.setText(txt_new_address.getText().length());
 
-        androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(PlaceOrderActivity.this)
-                .setTitle("Add New Address")
-                .setView(layout_add_new_address)
-                .setNegativeButton("CANCEL", (dialog, which) -> {
-                    dialog.dismiss();
-                })
-                .setPositiveButton("ADD", (dialog, which) -> {
-                    txt_new_address.setText(edt_new_address.getText().toString());
-                });
-
-        androidx.appcompat.app.AlertDialog addNewAdressDialog = builder.create();
-        addNewAdressDialog.show();
 
         edt_date.setOnClickListener((v -> {
 
@@ -176,19 +184,18 @@ public class PlaceOrderActivity extends BaseActivity implements DatePickerDialog
     private void getOrderNumber(boolean isOnlinePayment) {
         Log.d(TAG, "getOrderNumber: called!!");
         mDialog.show();
-        mDialog.show();
         if (!isOnlinePayment) {
             String address = chb_default_address.isChecked() ? txt_user_address.getText().toString() : txt_new_address.getText().toString();
             // Get All CartItems
-            compositeDisposable.add(mCartDataSource.getAllCart(Common.currentUser.getfBID(), Common.currentRestaurant.getRestaurantId())
+            compositeDisposable.add(mCartDataSource.getAllCart(Common.currentUser.getFBID(), Common.currentRestaurant.getRestaurantId())
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(cartItems -> {
-                        // Create Order And GET Number from Server
+                        // Create Orders And GET Number from Server
                         compositeDisposable.add(APIManage.getApi().createOrder(Common.API_KEY,
-                                Common.currentUser.getfBID(),
+                                Common.currentUser.getFBID(),
                                 Common.currentUser.getUserPhone(),
-                                Common.currentUser.getUserName(),
+                                Common.currentUser.getName(),
                                 address,
                                 1,
                                 edt_date.getText().toString(),
@@ -211,7 +218,7 @@ public class PlaceOrderActivity extends BaseActivity implements DatePickerDialog
                                                 .subscribe(updateOrderModel -> {
                                                     if (updateOrderModel.isSuccess()) {
                                                         // After update item, we will clear cart and show message success
-                                                        mCartDataSource.cleanCart(Common.currentUser.getfBID(),
+                                                        mCartDataSource.cleanCart(Common.currentUser.getFBID(),
                                                                 Common.currentRestaurant.getRestaurantId())
                                                                 .subscribeOn(Schedulers.io())
                                                                 .observeOn(AndroidSchedulers.mainThread())
@@ -223,7 +230,7 @@ public class PlaceOrderActivity extends BaseActivity implements DatePickerDialog
 
                                                                     @Override
                                                                     public void onSuccess(Integer integer) {
-                                                                        Toast.makeText(PlaceOrderActivity.this, "Order :Placed", Toast.LENGTH_SHORT).show();
+                                                                        Toast.makeText(PlaceOrderActivity.this, "Orders :Placed", Toast.LENGTH_SHORT).show();
                                                                         Intent homeActivity = new Intent(PlaceOrderActivity.this, HomeActivity.class);
                                                                         homeActivity.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                                                         startActivity(homeActivity);
@@ -256,6 +263,7 @@ public class PlaceOrderActivity extends BaseActivity implements DatePickerDialog
         }
     }
 
+    // Init Spots Dialog
     private void init() {
         Log.d(TAG, "init: called!!");
         mDialog = new SpotsDialog.Builder().setContext(this).setCancelable(false).build();
@@ -278,9 +286,12 @@ public class PlaceOrderActivity extends BaseActivity implements DatePickerDialog
         EventBus.getDefault().unregister(this);
         super.onStop();
     }
+
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
     public void setTotalCash(SendTotalCashEvent event) {
-        txt_total_cash.setText(String.valueOf(event.getCash()));
+        if (event != null) {
+            txt_total_cash.setText(String.valueOf(event.getCash()));
+        }
     }
 
     @Override

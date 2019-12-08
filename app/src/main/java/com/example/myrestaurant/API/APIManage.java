@@ -33,7 +33,7 @@ public class APIManage {
                     .build();
 
             instanceRetrofit = new Retrofit.Builder()
-                    .baseUrl("http://6.6.6.32:3000/")
+                    .baseUrl("http://6.6.6.31:3000/")
                     .client(client)
                     .addConverterFactory(GsonConverterFactory.create())
                     .addCallAdapterFactory(RxJava2CallAdapterFactory.create())

@@ -13,7 +13,7 @@ public class UserResponse {
 	private String message;
 
 	@SerializedName("result")
-	private List<User> result;
+	private List<Users> result;
 
 	public boolean isSuccess() {
 		return success;
@@ -31,11 +31,11 @@ public class UserResponse {
 		this.message = message;
 	}
 
-	public List<User> getResult() {
+	public List<Users> getResult() {
 		return result;
 	}
 
-	public void setResult(List<User> result) {
+	public void setResult(List<Users> result) {
 		this.result = result;
 	}
 

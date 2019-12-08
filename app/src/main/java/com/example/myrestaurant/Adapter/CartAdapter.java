@@ -96,7 +96,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartHolder> {
                                 @Override
                                 public void onSuccess(Integer integer) {
                                     holder.txt_quantity.setText(String.valueOf(mCartItemList.get(position).getFoodQuantity()));
-                                    EventBus.getDefault().postSticky(new CalculatePriceEvent());
+                                    EventBus.getDefault().postSticky(new CalculatePriceEvent(mCartItemList.get(position).getFoodQuantity()));
                                 }
 
                                 @Override
@@ -119,7 +119,6 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartHolder> {
                                 @Override
                                 public void onSuccess(Integer integer) {
                                     notifyItemRemoved(position);
-                                    EventBus.getDefault().postSticky(new CalculatePriceEvent());
                                 }
 
                                 @Override

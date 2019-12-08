@@ -11,7 +11,7 @@
         android:weightSum="10"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-        
+
         <ImageView
             android:id="@+id/img_food"
             android:src="@drawable/app_icon"
@@ -57,7 +57,7 @@
                 tools:ignore="HardcodedText" />
 
         </LinearLayout>
-        
+
     </LinearLayout>
 
 </androidx.cardview.widget.CardView>
