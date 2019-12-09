@@ -111,7 +111,7 @@ public class OrderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             orderHolder.txt_num_of_item.setText(new StringBuilder("Num of Items: ").append(mOrderList.get(position).getNumOfItem()));
             orderHolder.txt_order_address.setText(new StringBuilder(mOrderList.get(position).getOrderAddress()));
             orderHolder.txt_order_date.setText(new StringBuilder(mSimpleDateFormat.format(mOrderList.get(position).getOrderDate())));
-            orderHolder.txt_order_number.setText(new StringBuilder("Order Number : #").append(mOrderList.get(position).getOrderId()));
+            orderHolder.txt_order_number.setText(new StringBuilder("Orders Number : #").append(mOrderList.get(position).getOrderID()));
             orderHolder.txt_order_phone.setText(new StringBuilder(mOrderList.get(position).getOrderPhone()));
             orderHolder.txt_order_status.setText(Common.convertStatusToString(mOrderList.get(position).getOrderStatus()));
             orderHolder.txt_order_total_price.setText(new StringBuilder(mContext.getString(R.string.money_sign)).append(mOrderList.get(position).getTotalPrice()));

@@ -1,23 +1,19 @@
 package com.example.myrestaurant.UI;
-
-
 import android.app.AlertDialog;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LayoutAnimationController;
-
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.example.myrestaurant.Adapter.OrderAdapter;
 import com.example.myrestaurant.Base.BaseActivity;
 import com.example.myrestaurant.Model.Response.Orders;
 import com.example.myrestaurant.R;
-
 import java.util.List;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import dmax.dialog.SpotsDialog;
@@ -26,15 +22,13 @@ import io.reactivex.disposables.CompositeDisposable;
 public class ViewOrderActivity extends BaseActivity {
     private static final String TAG = ViewOrderActivity.class.getSimpleName();
 
-    @BindView(R.id.toolbar)
+    @BindView(R.id.toolbar_ViewOrder)
     Toolbar toolbar;
     @BindView(R.id.recycler_view_order)
     RecyclerView recycler_view_order;
 
-
     private CompositeDisposable compositeDisposable;
     private AlertDialog mDialog;
-
     private OrderAdapter mAdapter;
     private List<Orders> mOrderList;
     private int maxData = 0;
@@ -61,18 +55,29 @@ public class ViewOrderActivity extends BaseActivity {
     }
 
     private void getMaxOrder() {
+        Log.d(TAG, "getMaxOrder: called!!");
+        mDialog.show();
 
+    }
+    private void getAllOrder() {
+        Log.d(TAG, "getAllOrder: called!!");
+        mDialog.show();
     }
 
     private void initView() {
         Log.d(TAG, "initView: called!!");
         ButterKnife.bind(this);
+
+        mLayoutAnimationController = AnimationUtils.loadLayoutAnimation(this, R.anim.layout_item_from_left);
+
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        recycler_view_order.setLayoutManager(layoutManager);
+        recycler_view_order.addItemDecoration(new DividerItemDecoration(this, layoutManager.getOrientation()));
+
         toolbar.setTitle(getString(R.string.your_order));
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-        mLayoutAnimationController = AnimationUtils.loadLayoutAnimation(this, R.anim.layout_item_from_left);
-
 
     }
 

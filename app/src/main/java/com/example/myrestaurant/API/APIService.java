@@ -6,6 +6,7 @@ import com.example.myrestaurant.Model.Response.Favorite;
 import com.example.myrestaurant.Model.Response.FavoriteModel;
 import com.example.myrestaurant.Model.Response.Foods;
 import com.example.myrestaurant.Model.Response.FoodsModel;
+import com.example.myrestaurant.Model.Response.MaxOrderModel;
 import com.example.myrestaurant.Model.Response.MenuModel;
 import com.example.myrestaurant.Model.Response.RestauranrModel;
 import com.example.myrestaurant.Model.Response.SizeModel;
@@ -158,4 +159,14 @@ public interface APIService {
                           @Field("userEmail") String userEmail,
                           @Field("TwitterId") String TwitterId);
 
+
+    @GET("maxorder")
+    Observable<MaxOrderModel> getMaxOrder(@Query("key") String apiKey,
+                                          @Query("orderFBID") String orderFBID);
+
+    @GET("GetOrders")
+    Observable<MaxOrderModel> GetOrders(@Query("key") String apiKey,
+                                          @Query("orderFBID") String orderFBID);
+
 }
+

@@ -184,7 +184,7 @@ public class PlaceOrderActivity extends BaseActivity implements DatePickerDialog
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(cartItems -> {
-                        // Create Order And GET Number from Server
+                        // Create Orders And GET Number from Server
                         compositeDisposable.add(APIManage.getApi().createOrder(Common.API_KEY,
                                 Common.currentUser.getFBID(),
                                 Common.currentUser.getUserPhone(),
@@ -223,7 +223,7 @@ public class PlaceOrderActivity extends BaseActivity implements DatePickerDialog
 
                                                                     @Override
                                                                     public void onSuccess(Integer integer) {
-                                                                        Toast.makeText(PlaceOrderActivity.this, "Order :Placed", Toast.LENGTH_SHORT).show();
+                                                                        Toast.makeText(PlaceOrderActivity.this, "Orders :Placed", Toast.LENGTH_SHORT).show();
                                                                         Intent homeActivity = new Intent(PlaceOrderActivity.this, HomeActivity.class);
                                                                         homeActivity.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                                                         startActivity(homeActivity);
