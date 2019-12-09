@@ -8,6 +8,7 @@ import com.example.myrestaurant.Model.Response.Foods;
 import com.example.myrestaurant.Model.Response.FoodsModel;
 import com.example.myrestaurant.Model.Response.MaxOrderModel;
 import com.example.myrestaurant.Model.Response.MenuModel;
+import com.example.myrestaurant.Model.Response.OrdersModel;
 import com.example.myrestaurant.Model.Response.RestauranrModel;
 import com.example.myrestaurant.Model.Response.SizeModel;
 import com.example.myrestaurant.Model.Response.UpdateOrderModel;
@@ -165,8 +166,8 @@ public interface APIService {
                                           @Query("orderFBID") String orderFBID);
 
     @GET("GetOrders")
-    Observable<MaxOrderModel> GetOrders(@Query("key") String apiKey,
-                                          @Query("orderFBID") String orderFBID);
+    Observable<OrdersModel> GetOrders(@Query("key") String apiKey,
+                                      @Query("orderFBID") String orderFBID);
 
 }
 

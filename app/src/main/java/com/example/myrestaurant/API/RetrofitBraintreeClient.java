@@ -1,14 +1,17 @@
 package com.example.myrestaurant.API;
 
 import android.util.Log;
+
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
+
 import java.util.concurrent.TimeUnit;
+
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class APIManage {
+public class RetrofitBraintreeClient {
 
     private static Retrofit instanceRetrofit;
 
@@ -33,23 +36,19 @@ public class APIManage {
                     .build();
 
             instanceRetrofit = new Retrofit.Builder()
-                    .baseUrl("http://6.6.6.31:3000/")
+                    .baseUrl("http://6.6.6.31:3001/")
                     .client(client)
                     .addConverterFactory(GsonConverterFactory.create())
                     .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                     .build();
-
-
         }
         return instanceRetrofit;
     }
-
     //TODO Create Interfac getApi
-    public static APIService getApi() {
+    public static IBraintreeAPI getApi() {
         return getInstance()
-                .create(APIService.class);
+                .create(IBraintreeAPI.class);
     }
-
-
-
 }
+
+

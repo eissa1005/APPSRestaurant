@@ -278,6 +278,7 @@ public class PlaceOrderActivity extends BaseActivity implements DatePickerDialog
         EventBus.getDefault().unregister(this);
         super.onStop();
     }
+
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
     public void setTotalCash(SendTotalCashEvent event) {
         txt_total_cash.setText(String.valueOf(event.getCash()));

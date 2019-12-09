@@ -5,19 +5,28 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LayoutAnimationController;
+import android.widget.Toast;
+
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.myrestaurant.API.APIManage;
 import com.example.myrestaurant.Adapter.OrderAdapter;
 import com.example.myrestaurant.Base.BaseActivity;
+import com.example.myrestaurant.Common.Common;
 import com.example.myrestaurant.Model.Response.Orders;
 import com.example.myrestaurant.R;
+
+import java.util.ArrayList;
 import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import dmax.dialog.SpotsDialog;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.schedulers.Schedulers;
 
 public class ViewOrderActivity extends BaseActivity {
     private static final String TAG = ViewOrderActivity.class.getSimpleName();
@@ -50,18 +59,39 @@ public class ViewOrderActivity extends BaseActivity {
         init();
         initView();
 
-        //getAllOrder();
-        getMaxOrder();
+        getAllOrder();
+       // getMaxOrder();
     }
 
     private void getMaxOrder() {
         Log.d(TAG, "getMaxOrder: called!!");
-        mDialog.show();
+
 
     }
     private void getAllOrder() {
         Log.d(TAG, "getAllOrder: called!!");
         mDialog.show();
+        compositeDisposable.add(APIManage.getApi().GetOrders(Common.API_KEY,Common.currentUser.getFBID())
+        .subscribeOn(Schedulers.io())
+        .observeOn(AndroidSchedulers.mainThread())
+        .subscribe(ordersModel -> {
+            if(ordersModel.isSuccess()){
+                Log.d(TAG, "ordersModel: Size!!"+String.valueOf(ordersModel.getResult().size()));
+                if(ordersModel.getResult().size() > 0){
+                    if (mAdapter == null) {
+                        mOrderList = new ArrayList<>();
+                        mOrderList = ordersModel.getResult();
+                        mAdapter = new OrderAdapter(ViewOrderActivity.this, mOrderList);
+                        recycler_view_order.setAdapter(mAdapter);
+                        recycler_view_order.setLayoutAnimation(mLayoutAnimationController);
+                    }
+                }
+            }
+            mDialog.dismiss();
+        },throwable -> {
+            mDialog.dismiss();
+            Toast.makeText(activity, "[Get Orers Exception ]"+throwable.getMessage(), Toast.LENGTH_SHORT).show();
+        }));
     }
 
     private void initView() {
