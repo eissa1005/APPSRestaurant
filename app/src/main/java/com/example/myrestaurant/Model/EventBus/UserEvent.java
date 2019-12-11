@@ -1,13 +1,13 @@
 package com.example.myrestaurant.Model.EventBus;
 
-import com.example.myrestaurant.Model.Response.User;
+import com.example.myrestaurant.Model.Response.Users;
 
 public class UserEvent {
     private boolean success;
     private String message;
-    private User user;
+    private Users user;
 
-    public UserEvent(boolean success, User user) {
+    public UserEvent(boolean success, Users user) {
         this.success = success;
         this.user = user;
     }
@@ -33,11 +33,11 @@ public class UserEvent {
         this.message = message;
     }
 
-    public User getUser() {
+    public Users getUser() {
         return user;
     }
 
-    public void setUser(User user) {
+    public void setUser(Users user) {
         this.user = user;
     }
 }

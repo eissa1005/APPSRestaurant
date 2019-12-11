@@ -14,8 +14,8 @@ import io.reactivex.Single;
 @Dao
 public interface CartDAO {
 
-    @Query("SELECT * FROM Cart WHERE FBID=:FBID AND RestaurantId=:restaurantId")
-    Flowable<List<CartItem>> getAllCart(String FBID, int restaurantId);
+    @Query("SELECT * FROM Cart WHERE fbid=:fbid AND restaurantId=:restaurantId")
+    Flowable<List<CartItem>> getAllCart(String fbid, int restaurantId);
 
     @Query("SELECT COUNT(*) FROM Cart WHERE FBID=:FBID AND RestaurantId=:restaurantId")
     Single<Integer> countItemInCart(String FBID, int restaurantId);

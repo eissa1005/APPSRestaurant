@@ -17,6 +17,7 @@ import com.example.myrestaurant.Model.DAO.CartDatabase;
 import com.example.myrestaurant.Model.DAO.CartItem;
 import com.example.myrestaurant.Model.DAO.LocalCartDataSource;
 import com.example.myrestaurant.Model.EventBus.CalculatePriceEvent;
+import com.example.myrestaurant.Model.EventBus.SendTotalCashEvent;
 import com.example.myrestaurant.R;
 import com.squareup.picasso.Picasso;
 
@@ -95,8 +96,8 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartHolder> {
 
                                 @Override
                                 public void onSuccess(Integer integer) {
-                                    holder.txt_quantity.setText(String.valueOf(mCartItemList.get(position).getFoodQuantity()));
-                                    EventBus.getDefault().postSticky(new CalculatePriceEvent());
+                                    holder.txt_quantity.setText(String.valueOf(integer));
+                                    EventBus.getDefault().postSticky(new SendTotalCashEvent(String.valueOf(finalResult)));
                                 }
 
                                 @Override

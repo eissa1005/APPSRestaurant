@@ -39,7 +39,7 @@ import io.reactivex.schedulers.Schedulers;
 
 public class CartListActivity extends BaseActivity {
 
-    private static final String TAG = CartListActivity.class.getSimpleName();
+    private static final String TAG = "CartListActivity";
     @BindView(R.id.toolbar_catList)
     Toolbar toolbar;
     @BindView(R.id.recycler_cart)
@@ -75,6 +75,7 @@ public class CartListActivity extends BaseActivity {
 
     private void getAllItemInCart() {
         Log.d(TAG, "getAllItemInCart: called!!");
+        Log.d(TAG +"UserID ",Common.currentUser.getFBID());
         compositeDisposable.add(mCartDataSource.getAllCart(Common.currentUser.getFBID(),
                 Common.currentRestaurant.getRestaurantId())
                 .subscribeOn(Schedulers.io())
@@ -169,7 +170,7 @@ public class CartListActivity extends BaseActivity {
     private void init() {
         compositeDisposable = new CompositeDisposable();
         Log.d(TAG, "init: called!!");
-        mCartDataSource = new LocalCartDataSource(CartDatabase.getInstance(this).cartDAO());
+        mCartDataSource = new LocalCartDataSource(CartDatabase.getInstance(CartListActivity.this).cartDAO());
     }
 
     // Event Bus

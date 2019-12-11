@@ -1,10 +1,8 @@
 package com.example.myrestaurant.UI;
 
 import androidx.appcompat.widget.Toolbar;
-
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.format.DateUtils;
@@ -18,12 +16,14 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.example.myrestaurant.API.APIManage;
 import com.example.myrestaurant.Base.BaseActivity;
 import com.example.myrestaurant.Common.Common;
 import com.example.myrestaurant.Model.DAO.CartDataSource;
+import com.example.myrestaurant.Model.DAO.CartDatabase;
+import com.example.myrestaurant.Model.DAO.LocalCartDataSource;
 import com.example.myrestaurant.Model.EventBus.SendTotalCashEvent;
+import com.example.myrestaurant.Model.Response.Orders;
 import com.example.myrestaurant.R;
 import com.google.gson.Gson;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
@@ -35,12 +35,17 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
+
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import dmax.dialog.SpotsDialog;
+import io.reactivex.Scheduler;
 import io.reactivex.SingleObserver;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
@@ -48,7 +53,7 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 public class PlaceOrderActivity extends BaseActivity implements DatePickerDialog.OnDateSetListener {
-    private static final String TAG = PlaceOrderActivity.class.getSimpleName();
+    private static final String TAG = "PlaceOrderActivity";
 
     private static final int REQUEST_BRAINTREE_CODE = 7777;
 
@@ -78,8 +83,9 @@ public class PlaceOrderActivity extends BaseActivity implements DatePickerDialog
     private boolean isAddNewAddress = false;
 
     private CartDataSource mCartDataSource;
-    private CompositeDisposable compositeDisposable = new CompositeDisposable();
+    private CompositeDisposable compositeDisposable;
     private AlertDialog mDialog;
+    Map<String, Orders> ordersMap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,6 +97,7 @@ public class PlaceOrderActivity extends BaseActivity implements DatePickerDialog
         initView();
     }
 
+
     private void initView() {
         Log.d(TAG, "initView: called!!");
         ButterKnife.bind(this);
@@ -99,32 +106,36 @@ public class PlaceOrderActivity extends BaseActivity implements DatePickerDialog
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         txt_user_phone.setText(Common.currentUser.getUserPhone());
-        txt_new_address.setText(Common.currentUser.getAddress());
+        Log.d("RestaurantId ",String.valueOf(Common.currentRestaurant.getRestaurantId()));
+        txt_user_address.setText(Common.currentUser.getAddress());
+        Log.d(TAG +"FBID ",Common.currentUser.getFBID());
+
 
         //new address
         btn_add_new_address.setOnClickListener((v -> {
             isAddNewAddress = true;
             chb_default_address.setChecked(false);
+
+            @SuppressLint("InflateParams")
+            View layout_add_new_address = LayoutInflater.from(PlaceOrderActivity.this)
+                    .inflate(R.layout.layout_add_new_address, null);
+
+            EditText edt_new_address = layout_add_new_address.findViewById(R.id.edt_add_new_address);
+            edt_new_address.setText(txt_new_address.getText().toString());
+
+            androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(PlaceOrderActivity.this)
+                    .setTitle("Add New Address")
+                    .setView(layout_add_new_address)
+                    .setNegativeButton("CANCEL", (dialog, which) -> {
+                        dialog.dismiss();
+                    })
+                    .setPositiveButton("ADD", (dialog, which) -> {
+                        txt_new_address.setText(edt_new_address.getText().toString());
+                    });
+
+            androidx.appcompat.app.AlertDialog addNewAdressDialog = builder.create();
+            addNewAdressDialog.show();
         }));
-        Context context;
-        @SuppressLint("InflateParams") View layout_add_new_address = LayoutInflater.from(PlaceOrderActivity.this)
-                .inflate(R.layout.layout_add_new_address, null);
-        EditText edt_new_address = layout_add_new_address.findViewById(R.id.txt_new_address);
-        edt_new_address.setText(txt_new_address.getText().length());
-
-        androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(PlaceOrderActivity.this)
-                .setTitle("Add New Address")
-                .setView(layout_add_new_address)
-                .setNegativeButton("CANCEL", (dialog, which) -> {
-                    dialog.dismiss();
-                })
-                .setPositiveButton("ADD", (dialog, which) -> {
-                    txt_new_address.setText(edt_new_address.getText().toString());
-                });
-
-        androidx.appcompat.app.AlertDialog addNewAdressDialog = builder.create();
-        addNewAdressDialog.show();
-
         edt_date.setOnClickListener((v -> {
 
             Calendar now = Calendar.getInstance();
@@ -176,89 +187,102 @@ public class PlaceOrderActivity extends BaseActivity implements DatePickerDialog
     private void getOrderNumber(boolean isOnlinePayment) {
         Log.d(TAG, "getOrderNumber: called!!");
         mDialog.show();
-        mDialog.show();
         if (!isOnlinePayment) {
             String address = chb_default_address.isChecked() ? txt_user_address.getText().toString() : txt_new_address.getText().toString();
             // Get All CartItems
-            compositeDisposable.add(mCartDataSource.getAllCart(Common.currentUser.getFBID(), Common.currentRestaurant.getRestaurantId())
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(cartItems -> {
-                        // Create Orders And GET Number from Server
-                        compositeDisposable.add(APIManage.getApi().createOrder(Common.API_KEY,
-                                Common.currentUser.getFBID(),
-                                Common.currentUser.getUserPhone(),
-                                Common.currentUser.getName(),
-                                address,
-                                1,
-                                edt_date.getText().toString(),
-                                Common.currentRestaurant.getRestaurantId(),
-                                "NONE",
-                                true,
-                                Double.parseDouble(txt_total_cash.getText().toString()),
-                                cartItems.size())
-                                .subscribeOn(Schedulers.io())
-                                .observeOn(AndroidSchedulers.mainThread())
-                                .subscribe(createOrderModel -> {
-                                    if (createOrderModel.isSuccess()) {
-                                        // After have order number, we will update all item of this order to order Detail
-                                        // First, select Cart items
-                                        compositeDisposable.add(APIManage.getApi().updateOrder(Common.API_KEY,
-                                                String.valueOf(createOrderModel.getResult().get(0).getOrderNumber()),
-                                                new Gson().toJson(cartItems))
-                                                .subscribeOn(Schedulers.io())
-                                                .observeOn(AndroidSchedulers.mainThread())
-                                                .subscribe(updateOrderModel -> {
-                                                    if (updateOrderModel.isSuccess()) {
-                                                        // After update item, we will clear cart and show message success
-                                                        mCartDataSource.cleanCart(Common.currentUser.getFBID(),
-                                                                Common.currentRestaurant.getRestaurantId())
-                                                                .subscribeOn(Schedulers.io())
-                                                                .observeOn(AndroidSchedulers.mainThread())
-                                                                .subscribe(new SingleObserver<Integer>() {
-                                                                    @Override
-                                                                    public void onSubscribe(Disposable d) {
+            compositeDisposable.add(mCartDataSource.getAllCart(Common.currentUser.getFBID(),
+                 Common.currentRestaurant.getRestaurantId())
+                 .subscribeOn(Schedulers.io())
+                 .observeOn(AndroidSchedulers.mainThread())
+                 .subscribe(cartItems -> {
+             Log.d("cartItems",String.valueOf(cartItems.size()));
+             // Orders And GET Number from Server
 
-                                                                    }
+             compositeDisposable.add(APIManage.getApi().createOrder(Common.API_KEY,
+                 Common.currentUser.getFBID(),
+                 Common.currentUser.getUserPhone(),
+                 Common.currentUser.getUserName(),
+                 address,
+                 1,
+                 edt_date.getText().toString(),
+                 Common.currentRestaurant.getRestaurantId(),
+                 "Cash On Delivery ",
+                 true,
+                 Double.valueOf(txt_total_cash.getText().toString()),
+                 cartItems.size())
+                 .subscribeOn(Schedulers.io())
+                 .observeOn(AndroidSchedulers.mainThread())
+                 .subscribe(createOrderModel -> {
+                  if (createOrderModel.isSuccess() && createOrderModel.getResult().size() > 0) {
+                      //update all item of this order to order Detail
+            compositeDisposable.add(APIManage.getApi().updateOrder(Common.API_KEY,
+                       createOrderModel.getResult().get(0).getOrderNumber(),
+                       new Gson().toJson(cartItems))
+                       .subscribeOn(Schedulers.io())
+                       .observeOn(AndroidSchedulers.mainThread())
+                       .subscribe(updateOrderModel -> {
+                       if (updateOrderModel.isSuccess()) {
+                           Log.d("updateOrderModel",updateOrderModel.getResult());
+             // After update item, we will clear cart and show message success
+            mCartDataSource.cleanCart(Common.currentUser.getFBID(),
+                   Common.currentRestaurant.getRestaurantId())
+                   .subscribeOn(Schedulers.io())
+                   .observeOn(AndroidSchedulers.mainThread())
+                   .subscribe(new SingleObserver<Integer>() {
+                   @Override
+                   public void onSubscribe(Disposable d) {
 
-                                                                    @Override
-                                                                    public void onSuccess(Integer integer) {
-                                                                        Toast.makeText(PlaceOrderActivity.this, "Orders :Placed", Toast.LENGTH_SHORT).show();
-                                                                        Intent homeActivity = new Intent(PlaceOrderActivity.this, HomeActivity.class);
-                                                                        homeActivity.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                                                        startActivity(homeActivity);
-                                                                        finish();
-                                                                    }
+                     }
+                   @Override
+                   public void onSuccess(Integer integer) {
+                      Toast.makeText(PlaceOrderActivity.this, "Orders :Placed", Toast.LENGTH_SHORT).show();
+                      Intent homeActivity = new Intent(PlaceOrderActivity.this, HomeActivity.class);
+                      homeActivity.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                      startActivity(homeActivity);
+                      finish();
+                      }
 
-                                                                    @Override
-                                                                    public void onError(Throwable e) {
-                                                                        Toast.makeText(PlaceOrderActivity.this, "[CLEAR CART]" + e.getMessage(), Toast.LENGTH_SHORT).show();
-                                                                    }
-                                                                });
-                                                    }
-                                                    if (mDialog.isShowing())
-                                                        mDialog.dismiss();
-                                                }, throwable -> {
-                                                    mDialog.show();
-                                                    Toast.makeText(this, "[UPDATE ORDER]" + throwable.getMessage(), Toast.LENGTH_SHORT).show();
-                                                }));
-                                    } else {
-                                        mDialog.dismiss();
-                                        Toast.makeText(this, "[CREATE ORDER]" + createOrderModel.getMessage(), Toast.LENGTH_SHORT).show();
-                                    }
-                                }, throwable -> {
-                                    mDialog.dismiss();
-                                    Toast.makeText(this, "[CREATE ORDER]" + throwable.getMessage(), Toast.LENGTH_SHORT).show();
-                                }));
-                    }, throwable -> {
-                        Toast.makeText(this, "[GET ALL CART]" + throwable.getMessage(), Toast.LENGTH_SHORT).show();
-                    }));
-        }
+                   @Override
+                   public void onError(Throwable e) {
+                       Toast.makeText(PlaceOrderActivity.this, "[CLEAR CART]" + e.getMessage(), Toast.LENGTH_SHORT).show();
+                       }
+                   });
+               // end update order success
+              }
+                if (mDialog.isShowing())mDialog.dismiss();
+               // throwable UPDATE Order
+              }, throwable -> {
+                         mDialog.dismiss();
+                         Log.d("throwableUPDATE",throwable.getMessage());
+                         Toast.makeText(this, "[UPDATE ORDER]" + throwable.getMessage(), Toast.LENGTH_SHORT).show();
+                      }));
+                      mDialog.dismiss();
+               }
+               mDialog.dismiss();
+              // throwable Create Order
+             }, throwable -> {
+                      mDialog.dismiss();
+                      Log.d("CreateOrderthrowable",throwable.getMessage());
+                      Toast.makeText(this, "[CREATE Orderthrowable]" + throwable.getMessage(), Toast.LENGTH_SHORT).show();
+                 }));
+            // Cart item throwable
+            }, throwable -> {
+                            mDialog.dismiss();
+                            Log.d("CARTthrowable",throwable.getMessage());
+                            Toast.makeText(this, "[GET ALL CART]" + throwable.getMessage(), Toast.LENGTH_SHORT).show();
+                   }));
     }
+    else{
+            // isOnlinePayment Here Use Braintreee
+        }
+ }
 
     private void init() {
         Log.d(TAG, "init: called!!");
         mDialog = new SpotsDialog.Builder().setContext(this).setCancelable(false).build();
+        compositeDisposable = new CompositeDisposable();
+        ordersMap = new HashMap<>();
+        mCartDataSource=new LocalCartDataSource(CartDatabase.getInstance(PlaceOrderActivity.this).cartDAO());
     }
 
     @Override
@@ -281,6 +305,7 @@ public class PlaceOrderActivity extends BaseActivity implements DatePickerDialog
 
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
     public void setTotalCash(SendTotalCashEvent event) {
+        Log.d("Cash",event.getCash());
         txt_total_cash.setText(String.valueOf(event.getCash()));
     }
 

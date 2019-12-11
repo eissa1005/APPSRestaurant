@@ -93,8 +93,9 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
         txt_user_name = headerView.findViewById(R.id.headerName);
         txt_user_phone = headerView.findViewById(R.id.headerPhone);
 
-        txt_user_name.setText(Common.currentUser.getName());
+        txt_user_name.setText(Common.currentUser.getUserName());
         txt_user_phone.setText(Common.currentUser.getUserPhone());
+        Log.d("currentUser:FBID",String.valueOf(Common.currentUser.getFBID()));
 
         init();
         initView();

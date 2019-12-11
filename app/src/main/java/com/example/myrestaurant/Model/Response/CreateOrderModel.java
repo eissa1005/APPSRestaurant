@@ -5,6 +5,7 @@ import com.google.gson.annotations.SerializedName;
 import java.util.List;
 
 public class CreateOrderModel {
+
     @SerializedName("success")
     private boolean success;
 
@@ -37,4 +38,5 @@ public class CreateOrderModel {
     public void setResult(List<CreateOrder> result) {
         this.result = result;
     }
+
 }

@@ -1,7 +1,4 @@
 package com.example.myrestaurant.UI;
-
-import androidx.annotation.NonNull;
-
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,13 +11,7 @@ import android.widget.Toast;
 import com.example.myrestaurant.API.APIManage;
 import com.example.myrestaurant.Base.BaseActivity;
 import com.example.myrestaurant.Common.Common;
-import com.example.myrestaurant.Model.Response.Users;
 import com.example.myrestaurant.R;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -39,7 +30,7 @@ public class LoginActivity extends BaseActivity {
     EditText edit_Phone;
     @BindView(R.id.edit_Password)
     EditText edit_Password;
-    private FirebaseAuth mAuth;
+    //private FirebaseAuth mAuth;
     AlertDialog mDialog;
     CompositeDisposable compositeDisposable;
     private static final int APP_REQUEST_CODE = 99;
@@ -54,7 +45,7 @@ public class LoginActivity extends BaseActivity {
 
     private void init() {
         // Initialize Firebase Auth
-        mAuth = FirebaseAuth.getInstance();
+        //mAuth = FirebaseAuth.getInstance();
         mDialog = new SpotsDialog.Builder().setContext(activity).setCancelable(false).build();
         compositeDisposable = new CompositeDisposable();
     }
@@ -124,9 +115,9 @@ public class LoginActivity extends BaseActivity {
         }
     }
 
+/*
     @OnClick(R.id.btnRegister)
     public void Register(View view) {
-
         Log.e("Register", "Register Called");
         String email = edit_Phone.getText().toString();
         String password = edit_Password.getText().toString();
@@ -155,5 +146,6 @@ public class LoginActivity extends BaseActivity {
 
         }
     }
+ */
 
 }

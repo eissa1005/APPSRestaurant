@@ -4,7 +4,6 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.os.Bundle;
@@ -37,9 +36,6 @@ public class FavoriteActivity extends BaseActivity {
     AlertDialog mDialog;
     CompositeDisposable compositeDisposable;
     private LayoutAnimationController mLayoutAnimationController;
-
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
